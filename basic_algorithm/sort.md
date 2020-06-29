@@ -4,84 +4,75 @@
 
 ### 快速排序
 
-```go
-func QuickSort(nums []int) []int {
-    // 思路：把一个数组分为左右两段，左段小于右段
-    quickSort(nums, 0, len(nums)-1)
-    return nums
+```Python
+def partition(A, start, end):
+    if start >= end:
+        return
+    
+    l, r = start, end - 1
+    while l < r:
+        while l < r and A[l] <= A[end]:
+            l += 1
+        while l < r and A[r] >= A[end]:
+            r -= 1
+        
+        A[l], A[r] = A[r], A[l]
+    
+    swap = r + int(A[r] < A[end])
 
-}
-// 原地交换，所以传入交换索引
-func quickSort(nums []int, start, end int) {
-    if start < end {
-        // 分治法：divide
-        pivot := partition(nums, start, end)
-        quickSort(nums, 0, pivot-1)
-        quickSort(nums, pivot+1, end)
-    }
-}
-// 分区
-func partition(nums []int, start, end int) int {
-    // 选取最后一个元素作为基准pivot
-    p := nums[end]
-    i := start
-    // 最后一个值就是基准所以不用比较
-    for j := start; j < end; j++ {
-        if nums[j] < p {
-            swap(nums, i, j)
-            i++
-        }
-    }
-    // 把基准值换到中间
-    swap(nums, i, end)
-    return i
-}
-// 交换两个元素
-func swap(nums []int, i, j int) {
-    t := nums[i]
-    nums[i] = nums[j]
-    nums[j] = t
-}
+    A[end], A[swap] = A[swap], A[end]
+
+    partition(A, swap + 1, end)
+    partition(A, start, swap - 1)
+
+    return
+
+def quicksort(A):
+    partition(A, 0, len(A) - 1)
+    return A
+
+if __name__ == '__main__':
+    a = [7, 6, 8, 5, 2, 1, 3, 4, 0, 9, 10]
+    print(a)
+    print(quicksort(a))
 ```
 
 ### 归并排序
 
-```go
-func MergeSort(nums []int) []int {
-    return mergeSort(nums)
-}
-func mergeSort(nums []int) []int {
-    if len(nums) <= 1 {
-        return nums
-    }
-    // 分治法：divide 分为两段
-    mid := len(nums) / 2
-    left := mergeSort(nums[:mid])
-    right := mergeSort(nums[mid:])
-    // 合并两段数据
-    result := merge(left, right)
-    return result
-}
-func merge(left, right []int) (result []int) {
-    // 两边数组合并游标
-    l := 0
-    r := 0
-    // 注意不能越界
-    for l < len(left) && r < len(right) {
-        // 谁小合并谁
-        if left[l] > right[r] {
-            result = append(result, right[r])
-            r++
-        } else {
-            result = append(result, left[l])
-            l++
-        }
-    }
-    // 剩余部分合并
-    result = append(result, left[l:]...)
-    result = append(result, right[r:]...)
-    return
-}
+```Python
+def merge(A, B):
+    C = []
+    i, j = 0, 0
+    while i < len(A) and j < len(B):
+        if A[i] <= B[j]:
+            C.append(A[i])
+            i += 1
+        else:
+            C.append(B[j])
+            j += 1
+    
+    if i < len(A):
+        C += A[i:]
+    
+    if j < len(B):
+        C += B[j:]
+    
+    return C
+
+def mergsort(A):
+    n = len(A)
+    if n < 2:
+        return A[:]
+    
+    left = mergsort(A[:n // 2])
+    right = mergsort(A[n // 2:])
+
+    return merge(left, right)
+
+if __name__ == '__main__':
+    a = [7, 6, 8, 5, 2, 1, 3, 4, 0, 9, 10]
+    print(a)
+    print(mergsort(a))
 ```
 
 ### 堆排序
@@ -98,55 +89,46 @@ func merge(left, right []int) (result []int) {
 
 核心代码
 
-```go
-package main
+```Python
+def heap_adjust(A, start=0, end=None):
+    if end is None:
+        end = len(A)
+    
+    while start is not None and start < end // 2:
+        l, r = start * 2 + 1, start * 2 + 2
+        swap = None
 
-func HeapSort(a []int) []int {
-    // 1、无序数组a
-	// 2、将无序数组a构建为一个大根堆
-	for i := len(a)/2 - 1; i >= 0; i-- {
-		sink(a, i, len(a))
-	}
-	// 3、交换a[0]和a[len(a)-1]
-	// 4、然后把前面这段数组继续下沉保持堆结构，如此循环即可
-	for i := len(a) - 1; i >= 1; i-- {
-		// 从后往前填充值
-		swap(a, 0, i)
-		// 前面的长度也减一
-		sink(a, 0, i)
-	}
-	return a
-}
-func sink(a []int, i int, length int) {
-	for {
-		// 左节点索引(从0开始，所以左节点为i*2+1)
-		l := i*2 + 1
-		// 有节点索引
-		r := i*2 + 2
-		// idx保存根、左、右三者之间较大值的索引
-		idx := i
-		// 存在左节点，左节点值较大，则取左节点
-		if l < length && a[l] > a[idx] {
-			idx = l
-		}
-		// 存在有节点，且值较大，取右节点
-		if r < length && a[r] > a[idx] {
-			idx = r
-		}
-		// 如果根节点较大，则不用下沉
-		if idx == i {
-			break
-		}
-		// 如果根节点较小，则交换值，并继续下沉
-		swap(a, i, idx)
-		// 继续下沉idx节点
-		i = idx
-	}
-}
-func swap(a []int, i, j int) {
-	a[i], a[j] = a[j], a[i]
-}
+        if A[l] > A[start]:
+            swap = l
+        if r < end and A[r] > A[start] and (swap is None or A[r] > A[l]):
+            swap = r
 
+        if swap is not None:
+            A[start], A[swap] = A[swap], A[start]
+            
+        start = swap
+    
+    return
+
+def heapsort(A):
+
+    # construct max heap
+    n = len(A)
+    for i in range(n // 2 - 1, -1, -1):
+        heap_adjust(A, i)
+    
+    # sort
+    for i in range(n - 1, 0, -1):
+        A[0], A[i] = A[i], A[0]
+        heap_adjust(A, end=i)
+    
+    return A
+
+# test
+if __name__ == '__main__':
+    a = [7, 6, 8, 5, 2, 1, 3, 4, 0, 9, 10]
+    print(a)
+    print(heapsort(a))
 ```
 
 ## 参考
