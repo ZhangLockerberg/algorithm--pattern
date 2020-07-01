@@ -147,8 +147,6 @@ class Solution:
         return result
 ```
 
-
-
 ### [permutations-ii](https://leetcode-cn.com/problems/permutations-ii/)
 
 > 给定一个可包含重复数字的序列，返回所有不重复的全排列。
@@ -186,14 +184,158 @@ class Solution:
         return result
 ```
 
+### [combination-sum](https://leetcode-cn.com/problems/combination-sum/)
+
+```Python
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        
+        n = len(candidates)
+        result = []
+        
+        def backtrack(first=0, route=[], route_sum=0):
+            
+            if route_sum == target:
+                result.append(route.copy())
+                return
+            
+            if route_sum > target:
+                return
+            
+            for i in range(first, n):
+                route.append(candidates[i])
+                route_sum += candidates[i]
+                backtrack(i, route, route_sum)
+                route_sum -= route.pop()
+            
+            return
+        
+        backtrack()
+        return result
+```
+
+### [letter-combinations-of-a-phone-number](https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/)
+
+```Python
+class Solution:
+    def letterCombinations(self, digits: str) -> List[str]:
+        
+        n = len(digits)
+        result = []
+        
+        if n == 0:
+            return result
+        
+        num2char = {
+            '2': ['a', 'b', 'c'],
+            '3': ['d', 'e', 'f'],
+            '4': ['g', 'h', 'i'],
+            '5': ['j', 'k', 'l'],
+            '6': ['m', 'n', 'o'],
+            '7': ['p', 'q', 'r', 's'],
+            '8': ['t', 'u', 'v'],
+            '9': ['w', 'x', 'y', 'z']
+        }
+        
+        def backtrack(idx=0, route=[]):
+            if idx == n:
+                result.append(''.join(route))
+                return
+            
+            for c in num2char[digits[idx]]:
+                route.append(c)
+                backtrack(idx + 1, route)
+                route.pop()
+            
+            return
+        
+        backtrack()
+        return result
+```
+
+### [palindrome-partitioning](https://leetcode-cn.com/problems/palindrome-partitioning/)
+
+```Python
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        
+        n = len(s)
+        is_Pal = {}
+        
+        def isPal(i, j):
+            if i < j:
+                return is_Pal[i, j]
+            return True
+        
+        for i in range(n - 2, -1, -1):
+            for j in range(i + 1, n):
+                is_Pal[i, j] = s[i] == s[j] and isPal(i + 1, j - 1)
+        
+        result = []
+        
+        def backtrack(left=-1, right=-1, route=[]):
+            
+            if not isPal(left, right):
+                return
+            
+            if right == n - 1:
+                result.append(route.copy())
+                return
+            
+            left = right + 1
+            for i in range(left, n):
+                route.append(s[left:i + 1])
+                backtrack(left, i, route)
+                route.pop()
+            
+            return
+        
+        backtrack()
+        return result
+```
+
+### [restore-ip-addresses](https://leetcode-cn.com/problems/restore-ip-addresses/)
+
+```Python
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        
+        n = len(s)
+        result = []
+        
+        if n > 12:
+            return result
+        
+        def Valid_s(i, j):
+            return i < j and j <= n and ((s[i] != '0' and int(s[i:j]) < 256) or (s[i] == '0' and i == j - 1))
+        
+        def backtrack(start=0, route=[]):
+            
+            if len(route) == 3:
+                if Valid_s(start, n):
+                    result.append('.'.join(route) + '.' + s[start:])
+                return
+            
+            for i in range(start, start + 3):
+                if Valid_s(start, i + 1):
+                    route.append(s[start:i + 1])
+                    backtrack(i + 1, route)
+                    route.pop()
+                
+            return
+        
+        backtrack()
+        return result
+```
+
+
+
 ## 练习
 
 - [ ] [subsets](https://leetcode-cn.com/problems/subsets/)
 - [ ] [subsets-ii](https://leetcode-cn.com/problems/subsets-ii/)
 - [ ] [permutations](https://leetcode-cn.com/problems/permutations/)
 - [ ] [permutations-ii](https://leetcode-cn.com/problems/permutations-ii/)
-
-挑战题目
 
 - [ ] [combination-sum](https://leetcode-cn.com/problems/combination-sum/)
 - [ ] [letter-combinations-of-a-phone-number](https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/)
