@@ -71,24 +71,18 @@ class Solution:
 
 ```Python
 class Solution:
-    def postorderTraversal(self, root: TreeNode) -> List[int]:
-
-        s, postorder = [], []
-        node, last_visit = root, None
-        
+    def inorderTraversal(self, root: TreeNode) -> List[int]:
+        s, inorder = [], []
+        node = root
         while len(s) > 0 or node is not None:
             if node is not None:
                 s.append(node)
                 node = node.left
             else:
-                peek = s[-1]
-                if peek.right is not None and last_visit != peek.right:
-                    node = peek.right
-                else:
-                    last_visit = s.pop()
-                    postorder.append(last_visit.val)
-
-        return postorder
+                node = s.pop()
+                inorder.append(node.val)
+                node = node.right
+        return inorder
 ```
 
 #### [后序非递归](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/)
