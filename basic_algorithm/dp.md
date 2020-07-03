@@ -550,6 +550,149 @@ class Solution:
 
 ```
 
+## 补充
+
+### [maximum-product-subarray](https://leetcode-cn.com/problems/maximum-product-subarray/)
+
+> 最大乘积子串
+
+处理负数情况稍微有点复杂，注意需要同时 DP 正数乘积和负数乘积
+
+```Python
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        
+        max_product = float('-inf')
+
+        dp_pos, dp_neg = 0, 0
+        
+        for num in nums:
+            if num > 0:
+                dp_pos, dp_neg = max(num, num * dp_pos), dp_neg * num
+            else:
+                dp_pos, dp_neg = dp_neg * num, min(num, dp_pos * num)
+            
+            if dp_pos != 0:
+                max_product = max(max_product, dp_pos)
+            elif dp_neg != 0:
+                max_product = max(max_product, dp_neg)
+            else:
+                max_product = max(max_product, 0)
+            
+        return max_product
+```
+
+### [decode-ways](https://leetcode-cn.com/problems/decode-ways/)
+
+> 1~26 分别对应a~z，给定输入数字串，问总共有多少种译码方法
+
+常规 DP 题，注意处理edge case即可
+
+```Python
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        
+        def valid_2(i):
+            if i < 1:
+                return 0
+            num = int(s[i-1:i+1])
+            return int(num > 9 and num < 27)
+        
+        dp_1, dp_2 = 1, 0
+        for i in range(len(s)):
+            dp_1, dp_2 = dp_1 * int(s[i] != '0') + dp_2 * valid_2(i), dp_1
+        
+        return dp_1
+```
+
+### [best-time-to-buy-and-sell-stock-with-cooldown](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
+
+> 给定股票每天的价格，每天可以买入卖出，买入后必须卖出才可以进行下一次购买，卖出后一天不可以购买，问可以获得的最大利润
+
+经典的维特比译码类问题，找到状态空间和状态转移关系即可
+
+```Python
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        
+        buy, buy_then_nothing, sell, sell_then_nothing = float('-inf'), float('-inf'), float('-inf'), 0
+        
+        for p in prices:
+            buy, buy_then_nothing, sell, sell_then_nothing = sell_then_nothing - p, max(buy, buy_then_nothing), max(buy, buy_then_nothing) + p, max(sell, sell_then_nothing)
+        
+        return max(buy, buy_then_nothing, sell, sell_then_nothing)
+```
+
+### [word-break-ii](https://leetcode-cn.com/problems/word-break-ii/)
+
+> 给定字符串和可选的单词列表，求字符串所有的分割方式
+
+思路：此题 DP 解法容易想但并不是好做法，因为和 word-break 不同，此题需要返回所有可行分割而不是找到一组就可以。这里使用 个人推荐 backtrack with memoization。
+
+```Python
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
+        
+        n = len(s)
+        result = []
+        mem = collections.defaultdict(list)
+        wordDict = set(wordDict)
+        
+        def backtrack(first=0, route=[]):
+            if first == n:
+                result.append(' '.join(route))
+                return True
+            
+            if first not in mem:
+                for next_first in range(first + 1, n + 1):
+                    if s[first:next_first] in wordDict:
+                        route.append(s[first:next_first])
+                        if backtrack(next_first, route):
+                            mem[first].append(next_first)
+                        route.pop()
+                if len(mem[first]) > 0:
+                    return True
+            elif len(mem[first]) > 0:
+                for next_first in mem[first]:
+                    route.append(s[first:next_first])
+                    backtrack(next_first)
+                    route.pop()
+                return True
+            
+            return False
+        
+        backtrack()
+        return result
+```
+
+### [burst-balloons](https://leetcode-cn.com/problems/burst-balloons/)
+
+> n 个气球排成一行，每个气球上有一个分数，每次戳爆一个气球得分为该气球分数和相邻两气球分数的乘积，求最大得分
+
+此题主要难点是构造 DP 的状态，过程为逆着气球戳爆的顺序
+
+```Python
+class Solution:
+    def maxCoins(self, nums: List[int]) -> int:
+        
+        n = len(nums)
+        nums.append(1)
+        dp = [[0] * (n + 1) for _ in range(n + 1)]
+        
+        for dist in range(2, n + 2):
+            for left in range(-1, n - dist + 1):
+                right = left + dist
+                max_coin = float('-inf')
+                left_right = nums[left] * nums[right]
+                for j in range(left + 1, right):
+                    max_coin = max(max_coin, left_right * nums[j] + dp[left][j] + dp[j][right])
+                dp[left][right] = max_coin
+        nums.pop()
+        return dp[-1][n]
+```
+
+
+
 ## 练习
 
 Matrix DP (10%)
