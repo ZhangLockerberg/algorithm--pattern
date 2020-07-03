@@ -528,7 +528,7 @@ class Solution:
 > 有 `n` 个物品和一个大小为 `m` 的背包. 给定数组 `A` 表示每个物品的大小和数组 `V` 表示每个物品的价值.
 > 问最多能装入背包的总价值是多大?
 
-思路：f[i][j] 前 i 个物品，装入 j 背包 最大价值
+思路：dp(i, j) 为前 i 个物品，装入 j 背包的最大价值
 
 ```Python
 class Solution:
@@ -584,7 +584,7 @@ class Solution:
 
 ### [decode-ways](https://leetcode-cn.com/problems/decode-ways/)
 
-> 1~26 分别对应a~z，给定输入数字串，问总共有多少种译码方法
+> 1 到 26 分别对应 a 到 z，给定输入数字串，问总共有多少种译码方法
 
 常规 DP 题，注意处理edge case即可
 
