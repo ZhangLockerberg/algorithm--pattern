@@ -1,22 +1,24 @@
-def partition(A, start, end):
-    if start >= end:
+import random
+
+def partition(nums, left, right):
+    if left >= right:
         return
-    
-    l, r = start, end - 1
-    while l < r:
-        while l < r and A[l] <= A[end]:
-            l += 1
-        while l < r and A[r] >= A[end]:
-            r -= 1
-        
-        A[l], A[r] = A[r], A[l]
-    
-    swap = r + int(A[r] < A[end])
 
-    A[end], A[swap] = A[swap], A[end]
+    pivot_idx = random.randint(left, right)
+    pivot = nums[pivot_idx]
+    
+    nums[right], nums[pivot_idx] = nums[pivot_idx], nums[right]
+            
+    partition_idx = left
+    for i in range(left, right):
+        if nums[i] < pivot:
+            nums[partition_idx], nums[i] = nums[i], nums[partition_idx]
+            partition_idx += 1
+            
+    nums[right], nums[partition_idx] = nums[partition_idx], nums[right]
 
-    partition(A, swap + 1, end)
-    partition(A, start, swap - 1)
+    partition(nums, partition_idx + 1, right)
+    partition(nums, left, partition_idx - 1)
 
     return
 

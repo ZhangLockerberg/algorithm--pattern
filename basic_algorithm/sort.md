@@ -5,25 +5,27 @@
 ### 快速排序
 
 ```Python
-def partition(A, start, end):
-    if start >= end:
+import random
+
+def partition(nums, left, right):
+    if left >= right:
         return
-    
-    l, r = start, end - 1
-    while l < r:
-        while l < r and A[l] <= A[end]:
-            l += 1
-        while l < r and A[r] >= A[end]:
-            r -= 1
-        
-        A[l], A[r] = A[r], A[l]
-    
-    swap = r + int(A[r] < A[end])
 
-    A[end], A[swap] = A[swap], A[end]
+    pivot_idx = random.randint(left, right)
+    pivot = nums[pivot_idx]
+    
+    nums[right], nums[pivot_idx] = nums[pivot_idx], nums[right]
+            
+    partition_idx = left
+    for i in range(left, right):
+        if nums[i] < pivot:
+            nums[partition_idx], nums[i] = nums[i], nums[partition_idx]
+            partition_idx += 1
+            
+    nums[right], nums[partition_idx] = nums[partition_idx], nums[right]
 
-    partition(A, swap + 1, end)
-    partition(A, start, swap - 1)
+    partition(nums, partition_idx + 1, right)
+    partition(nums, left, partition_idx - 1)
 
     return
 
@@ -130,6 +132,67 @@ if __name__ == '__main__':
     print(a)
     print(heapsort(a))
 ```
+
+## 题目
+
+### [kth-largest-element-in-an-array](https://leetcode-cn.com/problems/kth-largest-element-in-an-array/)
+
+思路 1: sort 后取第 k 个，最简单直接，复杂度 O(N log N) 代码略
+
+思路 2: 使用最小堆，复杂度 O(N log k)
+
+```Python
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        # note that in practice there is a more efficient python build-in function heapq.nlargest(k, nums)
+        min_heap = []
+        
+        for num in nums:
+            if len(min_heap) < k:
+                heapq.heappush(min_heap, num)
+            else:
+                if num > min_heap[0]:
+                    heapq.heappushpop(min_heap, num)
+        
+        return min_heap[0]
+```
+
+思路 3: Quick select，方式类似于快排，每次 partition 后检查 pivot 是否为第 k 个元素，如果是则直接返回，如果比 k 大，则继续 partition 小于 pivot 的元素，如果比 k 小则继续 partition 大于 pivot 的元素。相较于快排，quick select 每次只需 partition 一侧，因此平均复杂度为 O(N)
+
+```Python
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        
+        k -= 1 # 0-based index
+        
+        def partition(left, right):
+            pivot_idx = random.randint(left, right)
+            pivot = nums[pivot_idx]
+            
+            nums[right], nums[pivot_idx] = nums[pivot_idx], nums[right]
+            
+            partition_idx = left
+            for i in range(left, right):
+                if nums[i] > pivot:
+                    nums[partition_idx], nums[i] = nums[i], nums[partition_idx]
+                    partition_idx += 1
+            
+            nums[right], nums[partition_idx] = nums[partition_idx], nums[right]
+            
+            return partition_idx
+        
+        left, right = 0, len(nums) - 1
+        while True:
+            partition_idx = partition(left, right)
+            if partition_idx == k:
+                return nums[k]
+            elif partition_idx < k:
+                left = partition_idx + 1
+            else:
+                right = partition_idx - 1
+```
+
+
 
 ## 参考
 
