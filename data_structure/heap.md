@@ -1,0 +1,240 @@
+# 优先级队列 (堆)
+
+用到优先级队列 (priority queue) 或堆 (heap) 的题一般需要维护一个动态更新的池，元素会被频繁加入到池中或从池中被取走，每次取走的元素为池中优先级最高的元素 (可以简单理解为最大或者最小)。用堆来实现优先级队列是效率非常高的方法，加入或取出都只需要 O(log N) 的复杂度。
+
+## Kth largest/smallest
+
+### [kth-largest-element-in-a-stream](https://leetcode-cn.com/problems/kth-largest-element-in-a-stream/)
+
+```Python
+class KthLargest:
+
+    def __init__(self, k: int, nums: List[int]):
+        self.K = k
+        self.min_heap = []
+        for num in nums:
+            if len(self.min_heap) < self.K:
+                heapq.heappush(self.min_heap, num)
+            elif num > self.min_heap[0]:
+                heapq.heappushpop(self.min_heap, num)
+
+    def add(self, val: int) -> int:
+        if len(self.min_heap) < self.K:
+            heapq.heappush(self.min_heap, val)
+        elif val > self.min_heap[0]:
+            heapq.heappushpop(self.min_heap, val)
+
+        return self.min_heap[0]
+```
+
+### [kth-smallest-element-in-a-sorted-matrix](https://leetcode-cn.com/problems/kth-smallest-element-in-a-sorted-matrix/)
+
+此题使用 heap 来做并不是最优做法，相当于 N 个 sorted list 里找第 k 个最小，列有序的条件没有充分利用，但是却是比较容易想且比较通用的做法。
+
+```Python
+class Solution:
+    def kthSmallest(self, matrix: List[List[int]], k: int) -> int:
+        
+        N = len(matrix)
+        
+        min_heap = []
+        for i in range(min(k, N)): # 这里用了一点列有序的性质，第k个最小只可能在前k行中(k行以后的数至少大于了k个数)
+            min_heap.append((matrix[i][0], i, 0))
+        
+        heapq.heapify(min_heap)
+        
+        while k > 0:
+            num, r, c = heapq.heappop(min_heap)
+            
+            if c < N - 1:
+                heapq.heappush(min_heap, (matrix[r][c + 1], r, c + 1))
+            
+            k -= 1
+        
+        return num
+```
+
+### [find-k-pairs-with-smallest-sums](https://leetcode-cn.com/problems/find-k-pairs-with-smallest-sums/)
+
+```Python
+class Solution:
+    def kSmallestPairs(self, nums1: List[int], nums2: List[int], k: int) -> List[List[int]]:
+        
+        m, n = len(nums1), len(nums2)
+        result = []
+        
+        if m * n == 0:
+            return result
+        
+        min_heap = [(nums1[0] + nums2[0], 0, 0)]
+        seen = set()
+        
+        while min_heap and len(result) < k:
+            _, i1, i2 = heapq.heappop(min_heap)
+            result.append([nums1[i1], nums2[i2]])
+            if i1 < m - 1 and (i1 + 1, i2) not in seen:
+                heapq.heappush(min_heap, (nums1[i1 + 1] + nums2[i2], i1 + 1, i2))
+                seen.add((i1 + 1, i2))
+            if i2 < n - 1 and (i1, i2 + 1) not in seen:
+                heapq.heappush(min_heap, (nums1[i1] + nums2[i2 + 1], i1, i2 + 1))
+                seen.add((i1, i2 + 1))
+        
+        return result
+```
+
+## Greedy + Heap
+
+Heap 可以高效地取出或更新当前池中优先级最高的元素，因此适用于一些需要 greedy 算法的场景。
+
+### [ipo](https://leetcode-cn.com/problems/ipo/)
+
+**图森面试真题**。贪心策略为每次做当前成本范围内利润最大的项目。
+
+```Python
+class Solution:
+    def findMaximizedCapital(self, k: int, W: int, Profits: List[int], Capital: List[int]) -> int:
+        N = len(Profits)
+        projects = sorted([(-Profits[i], Capital[i]) for i in range(N)], key=lambda x: x[1])
+        
+        projects.append((0, float('inf')))
+        
+        max_profit_heap = []
+        
+        for i in range(N + 1):
+            while projects[i][1] > W and len(max_profit_heap) > 0 and k > 0:
+                W -= heapq.heappop(max_profit_heap)
+                k -= 1
+            
+            if projects[i][1] > W or k == 0:
+                break
+            
+            heapq.heappush(max_profit_heap, projects[i][0])
+
+        return W
+```
+
+### [meeting-rooms-ii](https://leetcode-cn.com/problems/meeting-rooms-ii/)
+
+**图森面试真题**。此题用 greedy + heap 解并不是很 intuitive，存在复杂度相同但更简单直观的做法。
+
+```Python
+class Solution:
+    def minMeetingRooms(self, intervals: List[List[int]]) -> int:
+        
+        if len(intervals) == 0: return 0
+        
+        intervals.sort(key=lambda item: item[0])
+        end_times = [intervals[0][1]]
+        
+        for interval in intervals[1:]:
+            if end_times[0] <= interval[0]:
+                heapq.heappop(end_times)
+            
+            heapq.heappush(end_times, interval[1])
+        
+        return len(end_times)
+```
+
+### [reorganize-string](https://leetcode-cn.com/problems/reorganize-string/)
+
+```Python
+class Solution:
+    def reorganizeString(self, S: str) -> str:
+        
+        max_dup = (len(S) + 1) // 2
+        counts = collections.Counter(S)
+        
+        heap = []
+        for c, f in counts.items():
+            if f > max_dup:
+                return ''
+            heap.append([-f, c])
+        heapq.heapify(heap)
+        
+        result = []
+        while len(heap) > 1:
+            first = heapq.heappop(heap)
+            result.append(first[1])
+            first[0] += 1
+            second = heapq.heappop(heap)
+            result.append(second[1])
+            second[0] += 1
+            
+            if first[0] < 0:
+                heapq.heappush(heap, first)
+            if second[0] < 0:
+                heapq.heappush(heap, second)
+        
+        if len(heap) == 1:
+            result.append(heap[0][1])
+        
+        return ''.join(result)
+```
+
+## Dijkstra's Algorithm
+
+本质上也是 greedy + heap 的一种，用于求解图的单源最短路径相关的问题。
+
+### [network-delay-time](https://leetcode-cn.com/problems/network-delay-time/)
+
+标准的单源最短路径问题，使用朴素的的 Dijikstra 算法即可，可以当成模板使用。
+
+```Python
+class Solution:
+    def networkDelayTime(self, times: List[List[int]], N: int, K: int) -> int:
+        
+        # construct graph
+        graph_neighbor = collections.defaultdict(list)
+        for s, e, t in times:
+            graph_neighbor[s].append((e, t))
+        
+        # Dijkstra
+        SPT = {}
+        min_heap = [(0, K)]
+        
+        while min_heap:
+            delay, node = heapq.heappop(min_heap)
+            if node not in SPT:
+                SPT[node] = delay
+                for n, d in graph_neighbor[node]:
+                    if n not in SPT:
+                        heapq.heappush(min_heap, (d + delay, n))
+        
+        return max(SPT.values()) if len(SPT) == N else -1
+```
+
+### [cheapest-flights-within-k-stops](https://leetcode-cn.com/problems/cheapest-flights-within-k-stops/)
+
+在标准的单源最短路径问题上限制了路径的边数，因此需要同时维护当前 SPT 内每个结点最短路径的边数，当遇到边数更小的路径 (边权和可以更大) 时结点需要重新入堆，以更新后继在边数上限内没达到的结点。
+
+```Python
+class Solution:
+    def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, K: int) -> int:
+        
+        # construct graph
+        graph_neighbor = collections.defaultdict(list)
+        for s, e, p in flights:
+            graph_neighbor[s].append((e, p))
+        
+        # modified Dijkstra
+        prices, steps = {}, {}
+        min_heap = [(0, 0, src)]
+        
+        while len(min_heap) > 0:
+            price, step, node = heapq.heappop(min_heap)
+            
+            if node == dst: # early return
+                return price
+
+            if node not in prices:
+                prices[node] = price
+            
+            steps[node] = step
+            if step <= K:
+                step += 1
+                for n, p in graph_neighbor[node]:
+                    if n not in prices or step < steps[n]:
+                        heapq.heappush(min_heap, (p + price, step, n))
+        
+        return -1
+```
