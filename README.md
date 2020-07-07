@@ -34,6 +34,7 @@
 - [二分搜索](./basic_algorithm/binary_search.md)
 - [排序算法](./basic_algorithm/sort.md)
 - [动态规划](./basic_algorithm/dp.md)
+- [图相关算法](./basic_algorithm/graph/)
 
 ### 算法思维 🦁
 
