@@ -259,33 +259,30 @@ class Solution:
 class Solution:
     def partition(self, s: str) -> List[List[str]]:
         
-        n = len(s)
-        is_Pal = {}
+        N = len(s)
+        Pal = collections.defaultdict(set)
         
         def isPal(i, j):
             if i < j:
-                return is_Pal[i, j]
+                return j in Pal[i]
             return True
         
-        for i in range(n - 2, -1, -1):
-            for j in range(i + 1, n):
-                is_Pal[i, j] = s[i] == s[j] and isPal(i + 1, j - 1)
+        for j in range(N):
+            for i in range(j + 1):
+                if s[i] == s[j] and isPal(i + 1, j - 1):
+                    Pal[i].add(j)
         
         result = []
         
-        def backtrack(left=-1, right=-1, route=[]):
-            
-            if not isPal(left, right):
+        def backtrack(first=0, route=[]):
+
+            if first == N:
+                result.append(route[:])
                 return
-            
-            if right == n - 1:
-                result.append(route.copy())
-                return
-            
-            left = right + 1
-            for i in range(left, n):
-                route.append(s[left:i + 1])
-                backtrack(left, i, route)
+
+            for i in Pal[first]:
+                route.append(s[first:i+1])
+                backtrack(i + 1)
                 route.pop()
             
             return
