@@ -9,10 +9,10 @@
 ```Python
 # Kruskal's algorithm
 class Solution:
-    def getMinRiskValue(self, n, m, x, y, w):
+    def getMinRiskValue(self, N, M, X, Y, W):
         
         # Kruskal's algorithm with union-find to construct MST
-        parent = list(range(n + 1))
+        parent = list(range(N + 1))
         
         def find(x):
             if parent[parent[x]] != parent[x]:
@@ -27,68 +27,68 @@ class Solution:
             else:
                 return False
         
-        edges = sorted(zip(x, y, w), key=lambda x: x[2])
+        edges = sorted(zip(W, X, Y))
         
-        mst_edges = []        
+        MST_edges = []        
         for edge in edges:
-            if union(edge[0], edge[1]):
-                mst_edges.append(edge)
-            if find(0) == find(n):
+            if union(edge[1], edge[2]):
+                MST_edges.append(edge)
+            if find(0) == find(N):
                 break
         
-        mst = collections.defaultdict(list)
+        MST = collections.defaultdict(list)
         target = find(0)
-        for u, v, r in mst_edges:
+        for w, u, v in MST_edges:
             if find(u) == target and find(v) == target:
-                mst[u].append((v, r))
-                mst[v].append((u, r))
+                MST[u].append((v, w))
+                MST[v].append((u, w))
                 
         # dfs to search route from 0 to n
         dfs = [(0, None, float('-inf'))]
         while dfs:
-            v, p, max_risk = dfs.pop()
-            for a, r in mst[v]:
-                cur_max = max(max_risk, r)
-                if a == n:
-                    return cur_max
-                if a != p:
-                    dfs.append((a, v, cur_max))
+            v, p, max_w = dfs.pop()
+            for n, w in MST[v]:
+                cur_max_w = max(max_w, w)
+                if n == N:
+                    return cur_max_w
+                if n != p:
+                    dfs.append((n, v, cur_max_w))
 ```
 
 ```Python
 # Prim's algorithm
 class Solution:
-    def getMinRiskValue(self, n, m, x, y, w):
+    def getMinRiskValue(self, N, M, X, Y, W):
         
         # construct graph
         adj = collections.defaultdict(list)
-        for i in range(m):
-            adj[x[i]].append((y[i], w[i]))
-            adj[y[i]].append((x[i], w[i]))
+        for i in range(M):
+            adj[X[i]].append((Y[i], W[i]))
+            adj[Y[i]].append((X[i], W[i]))
             
         # Prim's algorithm with min heap
-        mst = collections.defaultdict(list)
-        min_heap = [(r, 0, v) for v, r in adj[0]]
+        MST = collections.defaultdict(list)
+        min_heap = [(w, 0, v) for v, w in adj[0]]
         heapq.heapify(min_heap)
         
-        while n not in mst:
-            r, u, v = heapq.heappop(min_heap)
-            if v not in mst:
-                mst[u].append((v, r))
-                mst[v].append((u, r))
-                for nei, w in adj[v]:
-                    if nei not in mst:
-                        heapq.heappush(min_heap, (w, v, nei))
+        while N not in MST:
+            w, p, v = heapq.heappop(min_heap)
+            if v not in MST:
+                MST[p].append((v, w))
+                MST[v].append((p, w))
+                for n, w in adj[v]:
+                    if n not in MST:
+                        heapq.heappush(min_heap, (w, v, n))
                 
         # dfs to search route from 0 to n
         dfs = [(0, None, float('-inf'))]
         while dfs:
-            v, p, max_risk = dfs.pop()
-            for a, r in mst[v]:
-                cur_max = max(max_risk, r)
-                if a == n:
-                    return cur_max
-                if a != p:
-                    dfs.append((a, v, cur_max))
+            v, p, max_w = dfs.pop()
+            for n, w in MST[v]:
+                cur_max_w = max(max_w, w)
+                if n == N:
+                    return cur_max_w
+                if n != p:
+                    dfs.append((n, v, cur_max_w))
 ```
 

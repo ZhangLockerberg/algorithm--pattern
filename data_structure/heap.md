@@ -171,9 +171,55 @@ class Solution:
         return ''.join(result)
 ```
 
-## Dijkstra's Algorithm
+### Prim's Algorithm
 
-本质上也是 greedy + heap 的一种，用于求解图的单源最短路径相关的问题。
+实现上是 greedy + heap 的一个应用，用于构造图的最小生成树 (MST)。
+
+### [minimum-risk-path](https://www.lintcode.com/problem/minimum-risk-path/description)
+
+> 地图上有 m 条无向边，每条边 (x, y, w) 表示位置 m 到位置 y 的权值为 w。从位置 0 到 位置 n 可能有多条路径。我们定义一条路径的危险值为这条路径中所有的边的最大权值。请问从位置 0 到 位置 n 所有路径中最小的危险值为多少？
+
+**图森面试真题**。最小危险值为最小生成树中 0 到 n 路径上的最大边权。
+
+```Python
+class Solution:
+    def getMinRiskValue(self, N, M, X, Y, W):
+        
+        # construct graph
+        adj = collections.defaultdict(list)
+        for i in range(M):
+            adj[X[i]].append((Y[i], W[i]))
+            adj[Y[i]].append((X[i], W[i]))
+            
+        # Prim's algorithm with min heap
+        MST = collections.defaultdict(list)
+        min_heap = [(w, 0, v) for v, w in adj[0]]
+        heapq.heapify(min_heap)
+        
+        while N not in MST:
+            w, p, v = heapq.heappop(min_heap)
+            if v not in MST:
+                MST[p].append((v, w))
+                MST[v].append((p, w))
+                for n, w in adj[v]:
+                    if n not in MST:
+                        heapq.heappush(min_heap, (w, v, n))
+                
+        # dfs to search route from 0 to n
+        dfs = [(0, None, float('-inf'))]
+        while dfs:
+            v, p, max_w = dfs.pop()
+            for n, w in MST[v]:
+                cur_max_w = max(max_w, w)
+                if n == N:
+                    return cur_max_w
+                if n != p:
+                    dfs.append((n, v, cur_max_w))
+```
+
+### Dijkstra's Algorithm
+
+实现上是 greedy + heap 的一个应用，用于求解图的单源最短路径相关的问题。
 
 ### [network-delay-time](https://leetcode-cn.com/problems/network-delay-time/)
 
