@@ -63,7 +63,38 @@ class Solution:
         return [[email2name[s[0]]] + sorted(s) for s in result.values()]
 ```
 
+### [longest-consecutive-sequence](https://leetcode-cn.com/problems/longest-consecutive-sequence/)
 
+```Python
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        
+        parent = {num: num for num in nums}
+        length = {num: 1 for num in nums}
+        
+        def find(x):
+            if parent[parent[x]] != parent[x]:
+                parent[x] = find(parent[x])
+            return parent[x]
+        
+        def union(x, y):
+            px, py = find(x), find(y)
+            if px != py:
+                parent[px] = py
+                length[py] += length[px]
+            return
+        
+        max_length = 0
+        for num in nums:
+            if num + 1 in parent:
+                union(num + 1, num)
+            if num - 1 in parent:
+                union(num - 1, num)
+            
+            max_length = max(max_length, length[parent[num]])
+        
+        return max_length
+```
 
 ### Kruskal's algorithm
 
