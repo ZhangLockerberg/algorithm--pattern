@@ -13,7 +13,7 @@ def DFS(x):
     return
 ```
 
-- 先序，迭代
+- 先序，迭代，出栈时访问
 
 ```Python
 def DFS(x):
@@ -22,7 +22,6 @@ def DFS(x):
         v = dfs.pop()
         if not visited(v):
             visit(v)
-            
             for n in neighbor(v):
                 if not visited(n):
                     dfs.append(n)
@@ -49,14 +48,14 @@ def DFS(x): # used when need to aggregate results from children
 
 ```Python
 def BFS(x):
+    visit(x)
     bfs = collections.deque([x])
     while bfs:
         v = bfs.popleft()
-        if not visited(v):
-            visit(v)
-            for n in neighbor(v):
-                if not visited(v):
-                    bfs.append(n)
+        for n in neighbor(v):
+            if not visited(n):
+                visit(n)
+                bfs.append(n)
     return
 ```
 
@@ -64,16 +63,16 @@ def BFS(x):
 
 ```Python
 def BFS(x):
+    visit(x)
     bfs = collections.deque([x])
     while bfs:
         num_level = len(bfs)
         for _ in range(num_level)
             v = bfs.popleft()
-            if not visited(v):
-                visit(v)
-                for n in neighbor(v):
-                    if not visited(v):
-                        bfs.append(n)
+            for n in neighbor(v):
+                if not visited(v):
+                    visit(n)
+                    bfs.append(n)
     return
 ```
 
@@ -90,7 +89,10 @@ inf = 2147483647
 
 class Solution:
     def wallsAndGates(self, rooms: List[List[int]]) -> None:
-
+        """
+        Do not return anything, modify rooms in-place instead.
+        """
+        
         if not rooms or not rooms[0]:
             return
         
@@ -101,28 +103,30 @@ class Solution:
         for i in range(M):
             for j in range(N):
                 if rooms[i][j] == 0:
-                    rooms[i][j] = inf
                     bfs.append((i, j))
         
-        dist = 0
+        dist = 1
         while bfs:
             num_level = len(bfs)
             for _ in range(num_level):
                 r, c = bfs.popleft()
-                if rooms[r][c] == inf:
-                    rooms[r][c] = dist
+                
+                if r - 1 >= 0 and rooms[r - 1][c] == inf:
+                    rooms[r - 1][c] = dist
+                    bfs.append((r - 1, c))
                     
-                    if r - 1 >= 0 and rooms[r - 1][c] == inf:
-                        bfs.append((r - 1, c))
+                if r + 1 < M and rooms[r + 1][c] == inf:
+                    rooms[r + 1][c] = dist
+                    bfs.append((r + 1, c))
                     
-                    if r + 1 < M and rooms[r + 1][c] == inf:
-                        bfs.append((r + 1, c))
+                if c - 1 >= 0 and rooms[r][c - 1] == inf:
+                    rooms[r][c - 1] = dist
+                    bfs.append((r, c - 1))
                     
-                    if c - 1 >= 0 and rooms[r][c - 1] == inf:
-                        bfs.append((r, c - 1))
-                    
-                    if c + 1 < N and rooms[r][c + 1] == inf:
-                        bfs.append((r, c + 1))
+                if c + 1 < N and rooms[r][c + 1] == inf:
+                    rooms[r][c + 1] = dist
+                    bfs.append((r, c + 1))
+            
             dist += 1
         
         return
@@ -156,24 +160,28 @@ class Solution:
                         
                 if r - 1 >= 0:
                     if A[r - 1][c] == 0: # meet and edge
+                        A[r - 1][c] = -2
                         bfs.append((r - 1, c))
                     elif A[r - 1][c] == 1:
                         dfs.append((r - 1, c))
 
                 if r + 1 < M:
                     if A[r + 1][c] == 0:
+                        A[r + 1][c] = -2
                         bfs.append((r + 1, c))
                     elif A[r + 1][c] == 1:
                         dfs.append((r + 1, c))
                                 
                 if c - 1 >= 0:
                     if A[r][c - 1] == 0:
+                        A[r][c - 1] = -2
                         bfs.append((r, c - 1))
                     elif A[r][c - 1] == 1:
                         dfs.append((r, c - 1))
                         
                 if c + 1 < N:
                     if A[r][c + 1] == 0:
+                        A[r][c + 1] = -2
                         bfs.append((r, c + 1))
                     elif A[r][c + 1] == 1:
                         dfs.append((r, c + 1))
@@ -182,32 +190,34 @@ class Solution:
             num_level = len(bfs)
             for _ in range(num_level):
                 r, c = bfs.popleft()
-                if A[r][c] == 0:
-                    A[r][c] = -2
-                                
-                    if r - 1 >= 0:
-                        if A[r - 1][c] == 0:
-                            bfs.append((r - 1, c))
-                        elif A[r - 1][c] == 1:
-                            return flip
+                
+                if r - 1 >= 0:
+                    if A[r - 1][c] == 0:
+                        A[r - 1][c] = -2
+                        bfs.append((r - 1, c))
+                    elif A[r - 1][c] == 1:
+                        return flip
 
-                    if r + 1 < M:
-                        if A[r + 1][c] == 0:
-                            bfs.append((r + 1, c))
-                        elif A[r + 1][c] == 1:
-                            return flip
+                if r + 1 < M:
+                    if A[r + 1][c] == 0:
+                        A[r + 1][c] = -2
+                        bfs.append((r + 1, c))
+                    elif A[r + 1][c] == 1:
+                        return flip
                                 
-                    if c - 1 >= 0:
-                        if A[r][c - 1] == 0:
-                            bfs.append((r, c - 1))
-                        elif A[r][c - 1] == 1:
-                            return flip
-                        
-                    if c + 1 < N:
-                        if A[r][c + 1] == 0:
-                            bfs.append((r, c + 1))
-                        elif A[r][c + 1] == 1:
-                            return flip
+                if c - 1 >= 0:
+                    if A[r][c - 1] == 0:
+                        A[r][c - 1] = -2
+                        bfs.append((r, c - 1))
+                    elif A[r][c - 1] == 1:
+                        return flip
+                    
+                if c + 1 < N:
+                    if A[r][c + 1] == 0:
+                        A[r][c + 1] = -2
+                        bfs.append((r, c + 1))
+                    elif A[r][c + 1] == 1:
+                        return flip
             flip += 1
 ```
 
