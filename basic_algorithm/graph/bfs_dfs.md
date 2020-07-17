@@ -79,6 +79,55 @@ def BFS(x):
 
 ## 例题
 
+### [walls-and-gates](https://leetcode-cn.com/problems/walls-and-gates/)
+
+> 给定一个二维矩阵，矩阵中元素 -1 表示墙或是障碍物，0 表示一扇门，INF (2147483647) 表示一个空的房间。你要给每个空房间位上填上该房间到最近门的距离，如果无法到达门，则填 INF 即可。
+
+**图森面试真题**。典型的多源最短路径问题，将所有源作为 BFS 的第一层即可
+
+```Python
+inf = 2147483647
+
+class Solution:
+    def wallsAndGates(self, rooms: List[List[int]]) -> None:
+
+        if not rooms or not rooms[0]:
+            return
+        
+        M, N = len(rooms), len(rooms[0])
+        
+        bfs = collections.deque([])
+        
+        for i in range(M):
+            for j in range(N):
+                if rooms[i][j] == 0:
+                    rooms[i][j] = inf
+                    bfs.append((i, j))
+        
+        dist = 0
+        while bfs:
+            num_level = len(bfs)
+            for _ in range(num_level):
+                r, c = bfs.popleft()
+                if rooms[r][c] == inf:
+                    rooms[r][c] = dist
+                    
+                    if r - 1 >= 0 and rooms[r - 1][c] == inf:
+                        bfs.append((r - 1, c))
+                    
+                    if r + 1 < M and rooms[r + 1][c] == inf:
+                        bfs.append((r + 1, c))
+                    
+                    if c - 1 >= 0 and rooms[r][c - 1] == inf:
+                        bfs.append((r, c - 1))
+                    
+                    if c + 1 < N and rooms[r][c + 1] == inf:
+                        bfs.append((r, c + 1))
+            dist += 1
+        
+        return
+```
+
 ### [shortest-bridge](https://leetcode-cn.com/problems/shortest-bridge/)
 
 > 在给定的 01 矩阵 A 中，存在两座岛 (岛是由四面相连的 1 形成的一个连通分量)。现在，我们可以将 0 变为 1，以使两座岛连接起来，变成一座岛。返回必须翻转的 0 的最小数目。
