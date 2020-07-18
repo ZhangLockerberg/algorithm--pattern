@@ -86,6 +86,34 @@ class Solution:
 
 Heap 可以高效地取出或更新当前池中优先级最高的元素，因此适用于一些需要 greedy 算法的场景。
 
+### [maximum-performance-of-a-team](https://leetcode-cn.com/problems/maximum-performance-of-a-team/)
+
+> 公司有 n 个工程师，给两个数组 speed 和 efficiency，其中 speed[i] 和 efficiency[i] 分别代表第 i 位工程师的速度和效率。请你返回由最多 k 个工程师组成的团队的最大表现值。表现值的定义为：一个团队中所有工程师速度的和乘以他们效率值中的最小值。
+>
+
+**图森面试真题**。[See my review here.](https://leetcode.com/problems/maximum-performance-of-a-team/discuss/741822/Met-this-problem-in-my-interview!!!-(Python3-greedy-with-heap)) [或者这里(中文)](https://leetcode-cn.com/problems/maximum-performance-of-a-team/solution/greedy-with-min-heap-lai-zi-zhen-shi-mian-shi-de-j/)
+
+```Python
+class Solution:
+    def maxPerformance(self, n, speed, efficiency, k):
+        
+        people = sorted(zip(speed, efficiency), key=lambda x: -x[1])
+        
+        result, sum_speed = 0, 0
+        min_heap = []
+		
+        for i, (s, e) in enumerate(people):
+            if i < k:
+                sum_speed += s
+                result = max(result, sum_speed * e)
+                heapq.heappush(min_heap, s)
+            elif s > min_heap[0]:
+                sum_speed += s - heapq.heappushpop(min_heap, s)
+                result = max(result, sum_speed * e)
+        
+        return result #% 1000000007
+```
+
 ### [ipo](https://leetcode-cn.com/problems/ipo/)
 
 **图森面试真题**。贪心策略为每次做当前成本范围内利润最大的项目。
