@@ -144,6 +144,7 @@ class Solution:
     def shortestBridge(self, A: List[List[int]]) -> int:
         
         M, N = len(A), len(A[0])
+        neighors = ((-1, 0), (1, 0), (0, -1), (0, 1))
         
         for i in range(M):
             for j in range(N):
@@ -157,67 +158,74 @@ class Solution:
             r, c = dfs.pop()
             if A[r][c] == 1:
                 A[r][c] = -1
-                        
-                if r - 1 >= 0:
-                    if A[r - 1][c] == 0: # meet and edge
-                        A[r - 1][c] = -2
-                        bfs.append((r - 1, c))
-                    elif A[r - 1][c] == 1:
-                        dfs.append((r - 1, c))
 
-                if r + 1 < M:
-                    if A[r + 1][c] == 0:
-                        A[r + 1][c] = -2
-                        bfs.append((r + 1, c))
-                    elif A[r + 1][c] == 1:
-                        dfs.append((r + 1, c))
-                                
-                if c - 1 >= 0:
-                    if A[r][c - 1] == 0:
-                        A[r][c - 1] = -2
-                        bfs.append((r, c - 1))
-                    elif A[r][c - 1] == 1:
-                        dfs.append((r, c - 1))
-                        
-                if c + 1 < N:
-                    if A[r][c + 1] == 0:
-                        A[r][c + 1] = -2
-                        bfs.append((r, c + 1))
-                    elif A[r][c + 1] == 1:
-                        dfs.append((r, c + 1))
+                for dr, dc in neighors:
+                    nr, nc = r + dr, c + dc
+                    if 0<= nr < M and 0 <= nc < N:
+                        if A[nr][nc] == 0: # meet and edge
+                            A[nr][nc] = -2
+                            bfs.append((nr, nc))
+                        elif A[nr][nc] == 1:
+                            dfs.append((nr, nc))
+
         flip = 1
         while bfs:
             num_level = len(bfs)
             for _ in range(num_level):
                 r, c = bfs.popleft()
                 
-                if r - 1 >= 0:
-                    if A[r - 1][c] == 0:
-                        A[r - 1][c] = -2
-                        bfs.append((r - 1, c))
-                    elif A[r - 1][c] == 1:
-                        return flip
-
-                if r + 1 < M:
-                    if A[r + 1][c] == 0:
-                        A[r + 1][c] = -2
-                        bfs.append((r + 1, c))
-                    elif A[r + 1][c] == 1:
-                        return flip
-                                
-                if c - 1 >= 0:
-                    if A[r][c - 1] == 0:
-                        A[r][c - 1] = -2
-                        bfs.append((r, c - 1))
-                    elif A[r][c - 1] == 1:
-                        return flip
-                    
-                if c + 1 < N:
-                    if A[r][c + 1] == 0:
-                        A[r][c + 1] = -2
-                        bfs.append((r, c + 1))
-                    elif A[r][c + 1] == 1:
-                        return flip
+                for dr, dc in neighors:
+                    nr, nc = r + dr, c + dc
+                    if 0<= nr < M and 0 <= nc < N:
+                        if A[nr][nc] == 0: # meet and edge
+                            A[nr][nc] = -2
+                            bfs.append((nr, nc))
+                        elif A[nr][nc] == 1:
+                            return flip
             flip += 1
 ```
 
+### [sliding-puzzle](https://leetcode-cn.com/problems/sliding-puzzle)
+
+```Python
+class Solution:
+    def slidingPuzzle(self, board: List[List[int]]) -> int:
+        
+        next_move = {
+            0: [1, 3],
+            1: [0, 2, 4],
+            2: [1, 5],
+            3: [0, 4],
+            4: [1, 3, 5],
+            5: [2, 4]
+        }
+        
+        start = tuple(itertools.chain(*board))
+        target = (1, 2, 3, 4, 5, 0)
+        
+        if start == target:
+            return 0
+        
+        SPT = set([start])
+        bfs = collections.deque([(start, start.index(0))])
+        
+        step = 1
+        while bfs:
+            num_level = len(bfs)
+            for _ in range(num_level):
+                state, idx0 = bfs.popleft()
+            
+                for next_step in next_move[idx0]:
+                    next_state = list(state)
+                    next_state[idx0], next_state[next_step] = next_state[next_step], next_state[idx0]
+                    next_state = tuple(next_state)
+                    
+                    if next_state == target:
+                        return step
+                    
+                    if next_state not in SPT:
+                        SPT.add(next_state)
+                        bfs.append((next_state, next_step))
+            step += 1
+        return -1
+```
