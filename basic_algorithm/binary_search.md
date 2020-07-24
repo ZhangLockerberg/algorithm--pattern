@@ -78,7 +78,7 @@ class Solution:
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
         
-        l, r = 0, len(nums)
+        l, r = 0, len(nums) - 1
         
         while l < r:
             mid = (l + r) // 2
@@ -87,7 +87,7 @@ class Solution:
             else:
                 r = mid
 
-        if l < len(nums) and nums[l] == target:
+        if nums[l] == target:
             return l
         
         return -1
@@ -97,14 +97,14 @@ class Solution:
 
 ## 常见题目
 
-### [search-for-range](https://www.lintcode.com/problem/search-for-a-range/description)
+### [find-first-and-last-position-of-element-in-sorted-array](https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/)
 
-> 给定一个包含 n 个整数的排序数组，找出给定目标值 target 的起始和结束位置。
-> 如果目标值不在数组中，则返回`[-1, -1]`
+> 给定一个包含 n 个整数的排序数组，找出给定目标值 target 的起始和结束位置。如果目标值不在数组中，则返回`[-1, -1]`
 
 思路：核心点就是找第一个 target 的索引，和最后一个 target 的索引，所以用两次二分搜索分别找第一次和最后一次的位置
 
 ```Python
+# 使用模板3的解法
 class Solution:
     def searchRange(self, nums, target):
         Range = [-1, -1]
@@ -123,6 +123,8 @@ class Solution:
             Range[0] = l
         elif nums[r] == target:
             Range[0] = r
+        else:
+            return Range
         
         l, r = 0, len(nums) - 1
         while l + 1 < r:
@@ -134,11 +136,46 @@ class Solution:
         
         if nums[r] == target:
             Range[1] = r
-        elif nums[l] == target:
+        else:
             Range[1] = l
         
         return Range
 ```
+
+```Python
+# 使用模板2的解法
+class Solution:
+    def searchRange(self, nums, target):
+        Range = [-1, -1]
+        if len(nums) == 0:
+            return Range
+        
+        l, r = 0, len(nums) - 1
+        while l < r:
+            mid = (l + r) // 2
+            if nums[mid] < target:
+                l = mid + 1
+            else:
+                r = mid
+
+        if nums[l] == target:
+            Range[0] = l
+        else:
+            return Range 
+        
+        l, r = 0, len(nums) - 1
+        while l < r:
+            mid = (l + r + 1) // 2
+            if nums[mid] > target:
+                r = mid - 1
+            else:
+                l = mid
+            
+        Range[1] = l
+        return Range
+```
+
+
 
 ### [search-insert-position](https://leetcode-cn.com/problems/search-insert-position/)
 
