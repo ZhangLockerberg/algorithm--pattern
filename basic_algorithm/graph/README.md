@@ -10,3 +10,5 @@ Ongoing...
 
 [最短路径](./shortest_path.md)
 
+[图的表示](./graph_representation.md)
+
