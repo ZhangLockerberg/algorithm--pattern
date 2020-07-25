@@ -11,7 +11,7 @@
 class Solution:
     def getMinRiskValue(self, N, M, X, Y, W):
         
-        # Kruskal's algorithm with union-find to construct MST
+        # Kruskal's algorithm with union-find
         parent = list(range(N + 1))
         
         def find(x):
@@ -29,30 +29,9 @@ class Solution:
         
         edges = sorted(zip(W, X, Y))
         
-        MST_edges = []        
-        for edge in edges:
-            if union(edge[1], edge[2]):
-                MST_edges.append(edge)
-            if find(0) == find(N):
-                break
-        
-        MST = collections.defaultdict(list)
-        target = find(0)
-        for w, u, v in MST_edges:
-            if find(u) == target and find(v) == target:
-                MST[u].append((v, w))
-                MST[v].append((u, w))
-                
-        # dfs to search route from 0 to n
-        dfs = [(0, None, float('-inf'))]
-        while dfs:
-            v, p, max_w = dfs.pop()
-            for n, w in MST[v]:
-                cur_max_w = max(max_w, w)
-                if n == N:
-                    return cur_max_w
-                if n != p:
-                    dfs.append((n, v, cur_max_w))
+        for w, x, y in edges:
+            if union(x, y) and find(0) == find(N): # early return without constructing MST
+                return w
 ```
 
 ```Python
