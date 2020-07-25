@@ -12,7 +12,7 @@
 
 ## Stack 栈
 
-[min-stack](https://leetcode-cn.com/problems/min-stack/)
+### [min-stack](https://leetcode-cn.com/problems/min-stack/)
 
 > 设计一个支持 push，pop，top 操作，并能在常数时间内检索到最小元素的栈。
 
@@ -40,7 +40,7 @@ class MinStack:
         return self.stack[-1][1]
 ```
 
-[evaluate-reverse-polish-notation](https://leetcode-cn.com/problems/evaluate-reverse-polish-notation/)
+### [evaluate-reverse-polish-notation](https://leetcode-cn.com/problems/evaluate-reverse-polish-notation/)
 
 > **波兰表达式计算** > **输入:** ["2", "1", "+", "3", "*"] > **输出:** 9
 > **解释:** ((2 + 1) \* 3) = 9
@@ -78,7 +78,7 @@ class Solution:
         return stack[0]
 ```
 
-[decode-string](https://leetcode-cn.com/problems/decode-string/)
+### [decode-string](https://leetcode-cn.com/problems/decode-string/)
 
 > 给定一个经过编码的字符串，返回它解码后的字符串。
 > s = "3[a]2[bc]", 返回 "aaabcbc".
@@ -129,7 +129,7 @@ def DFS(vertex):
     return
 ```
 
-[binary-tree-inorder-traversal](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
+### [binary-tree-inorder-traversal](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
 
 > 给定一个二叉树，返回它的*中序*遍历。
 
@@ -154,7 +154,7 @@ class Solution:
         return inorder
 ```
 
-[clone-graph](https://leetcode-cn.com/problems/clone-graph/)
+### [clone-graph](https://leetcode-cn.com/problems/clone-graph/)
 
 > 给你无向连通图中一个节点的引用，请你返回该图的深拷贝（克隆）。
 
@@ -212,9 +212,7 @@ class Solution:
         return visited[start]
 ```
 
-
-
-[number-of-islands](https://leetcode-cn.com/problems/number-of-islands/)
+### [number-of-islands](https://leetcode-cn.com/problems/number-of-islands/)
 
 > 给定一个由  '1'（陆地）和 '0'（水）组成的的二维网格，计算岛屿的数量。一个岛被水包围，并且它是通过水平方向或垂直方向上相邻的陆地连接而成的。你可以假设网格的四个边均被水包围。
 
@@ -258,7 +256,7 @@ class Solution:
         return num_island
 ```
 
-[largest-rectangle-in-histogram](https://leetcode-cn.com/problems/largest-rectangle-in-histogram/)
+### [largest-rectangle-in-histogram](https://leetcode-cn.com/problems/largest-rectangle-in-histogram/)
 
 > 给定 _n_ 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
 > 求在该柱状图中，能够勾勒出来的矩形的最大面积。
@@ -347,7 +345,7 @@ class Solution:
 
 常用于 BFS 宽度优先搜索
 
-[implement-queue-using-stacks](https://leetcode-cn.com/problems/implement-queue-using-stacks/)
+### [implement-queue-using-stacks](https://leetcode-cn.com/problems/implement-queue-using-stacks/)
 
 > 使用栈实现队列
 
@@ -390,7 +388,7 @@ class MyQueue:
         return len(self.cache) == 0 and len(self.out) == 0
 ```
 
-[binary-tree-level-order-traversal](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
+### [binary-tree-level-order-traversal](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
 
 > 二叉树的层序遍历
 
@@ -420,7 +418,7 @@ class Solution:
         return levels
 ```
 
-[01-matrix](https://leetcode-cn.com/problems/01-matrix/)
+### [01-matrix](https://leetcode-cn.com/problems/01-matrix/)
 
 > 给定一个由 0 和 1 组成的矩阵，找出每个元素到最近的 0 的距离。
 > 两个相邻元素间的距离为 1
@@ -491,7 +489,44 @@ class Solution:
         return dist
 ```
 
+## 补充：单调队列
 
+### [sliding-window-maximum](https://leetcode-cn.com/problems/sliding-window-maximum/)
+
+> 求滑动窗口中的最大元素
+
+```Python
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        
+        N = len(nums)
+        if N * k == 0:
+            return []
+        
+        if k == 1:
+            return nums[:]
+        
+        # define a max queue
+        maxQ = collections.deque()
+        
+        def push(i):
+            if maxQ and maxQ[0] == i - k:
+                maxQ.popleft()
+            
+            while maxQ and nums[maxQ[-1]] < nums[i]:
+                maxQ.pop()
+            
+            maxQ.append(i)
+            return
+        
+        result = []
+        for i in range(N):
+            push(i)
+            if i >= k - 1:
+                result.append(nums[maxQ[0]])
+        
+        return result
+```
 
 ## 总结
 
