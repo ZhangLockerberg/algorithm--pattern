@@ -91,7 +91,7 @@ Heap 可以高效地取出或更新当前池中优先级最高的元素，因此
 > 公司有 n 个工程师，给两个数组 speed 和 efficiency，其中 speed[i] 和 efficiency[i] 分别代表第 i 位工程师的速度和效率。请你返回由最多 k 个工程师组成的团队的最大表现值。表现值的定义为：一个团队中所有工程师速度的和乘以他们效率值中的最小值。
 >
 
-**图森面试真题**。[See my review here.](https://leetcode.com/problems/maximum-performance-of-a-team/discuss/741822/Met-this-problem-in-my-interview!!!-(Python3-greedy-with-heap)) [或者这里(中文)](https://leetcode-cn.com/problems/maximum-performance-of-a-team/solution/greedy-with-min-heap-lai-zi-zhen-shi-mian-shi-de-j/)
+[See my review here.](https://leetcode.com/problems/maximum-performance-of-a-team/discuss/741822/Met-this-problem-in-my-interview!!!-(Python3-greedy-with-heap)) [或者这里(中文)](https://leetcode-cn.com/problems/maximum-performance-of-a-team/solution/greedy-with-min-heap-lai-zi-zhen-shi-mian-shi-de-j/)
 
 ```Python
 class Solution:
@@ -116,7 +116,7 @@ class Solution:
 
 ### [ipo](https://leetcode-cn.com/problems/ipo/)
 
-**图森面试真题**。贪心策略为每次做当前成本范围内利润最大的项目。
+贪心策略为每次做当前成本范围内利润最大的项目。
 
 ```Python
 class Solution:
@@ -143,7 +143,7 @@ class Solution:
 
 ### [meeting-rooms-ii](https://leetcode-cn.com/problems/meeting-rooms-ii/)
 
-**图森面试真题**。此题用 greedy + heap 解并不是很 intuitive，存在复杂度相同但更简单直观的做法。
+此题用 greedy + heap 解并不是很 intuitive，存在复杂度相同但更简单直观的做法。
 
 ```Python
 class Solution:
@@ -207,7 +207,7 @@ class Solution:
 
 > 地图上有 m 条无向边，每条边 (x, y, w) 表示位置 m 到位置 y 的权值为 w。从位置 0 到 位置 n 可能有多条路径。我们定义一条路径的危险值为这条路径中所有的边的最大权值。请问从位置 0 到 位置 n 所有路径中最小的危险值为多少？
 
-**图森面试真题**。最小危险值为最小生成树中 0 到 n 路径上的最大边权。
+最小危险值为最小生成树中 0 到 n 路径上的最大边权。
 
 ```Python
 class Solution:

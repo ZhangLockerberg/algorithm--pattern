@@ -102,14 +102,14 @@ class Solution:
 
 > 地图上有 m 条无向边，每条边 (x, y, w) 表示位置 m 到位置 y 的权值为 w。从位置 0 到 位置 n 可能有多条路径。我们定义一条路径的危险值为这条路径中所有的边的最大权值。请问从位置 0 到 位置 n 所有路径中最小的危险值为多少？
 
-**图森面试真题**。最小危险值为最小生成树中 0 到 n 路径上的最大边权。
+最小危险值为最小生成树中 0 到 n 路径上的最大边权。
 
 ```Python
 # Kruskal's algorithm
 class Solution:
     def getMinRiskValue(self, N, M, X, Y, W):
         
-        # Kruskal's algorithm with union-find to construct MST
+        # Kruskal's algorithm with union-find
         parent = list(range(N + 1))
         
         def find(x):
@@ -127,28 +127,7 @@ class Solution:
         
         edges = sorted(zip(W, X, Y))
         
-        MST_edges = []        
-        for edge in edges:
-            if union(edge[1], edge[2]):
-                MST_edges.append(edge)
-            if find(0) == find(N):
-                break
-        
-        MST = collections.defaultdict(list)
-        target = find(0)
-        for w, u, v in MST_edges:
-            if find(u) == target and find(v) == target:
-                MST[u].append((v, w))
-                MST[v].append((u, w))
-                
-        # dfs to search route from 0 to n
-        dfs = [(0, None, float('-inf'))]
-        while dfs:
-            v, p, max_w = dfs.pop()
-            for n, w in MST[v]:
-                cur_max_w = max(max_w, w)
-                if n == N:
-                    return cur_max_w
-                if n != p:
-                    dfs.append((n, v, cur_max_w))
+        for w, x, y in edges:
+            if union(x, y) and find(0) == find(N): # early return without constructing MST
+                return w
 ```

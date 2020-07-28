@@ -134,10 +134,16 @@ Function(x) {
 > 给定一个包含非负整数的  *m* x *n*  网格，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。
 
 思路：动态规划
-1、state: f[x][y]从起点走到 x,y 的最短路径
-2、function: f[x][y] = min(f[x-1][y], f[x][y-1]) + A[x][y]
-3、intialize: f[0][0] = A[0][0]、f[i][0] = sum(0,0 -> i,0)、 f[0][i] = sum(0,0 -> 0,i)
-4、answer: f[n-1][m-1]
+
+1. state: f(x, y) 从起点走到 (x, y) 的最短路径 
+
+2. function: f(x, y) = min(f(x - 1, y), f(x, y - 1]) + A(x, y)
+
+3. intialize: f(0, 0) = A(0, 0)、f(i, 0) = sum(0,0 -> i,0)、 f(0, i) = sum(0,0 -> 0,i)
+
+4. answer: f(n - 1, m - 1)
+
+5. 2D DP -> 1D DP
 
 ```Python
 class Solution:
