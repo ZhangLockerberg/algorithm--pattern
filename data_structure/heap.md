@@ -94,6 +94,7 @@ Heap 可以高效地取出或更新当前池中优先级最高的元素，因此
 [See my review here.](https://leetcode.com/problems/maximum-performance-of-a-team/discuss/741822/Met-this-problem-in-my-interview!!!-(Python3-greedy-with-heap)) [或者这里(中文)](https://leetcode-cn.com/problems/maximum-performance-of-a-team/solution/greedy-with-min-heap-lai-zi-zhen-shi-mian-shi-de-j/)
 
 ```Python
+# similar question: LC 857
 class Solution:
     def maxPerformance(self, n, speed, efficiency, k):
         
@@ -105,11 +106,11 @@ class Solution:
         for i, (s, e) in enumerate(people):
             if i < k:
                 sum_speed += s
-                result = max(result, sum_speed * e)
                 heapq.heappush(min_heap, s)
             elif s > min_heap[0]:
                 sum_speed += s - heapq.heappushpop(min_heap, s)
-                result = max(result, sum_speed * e)
+            
+            result = max(result, sum_speed * e)
         
         return result #% 1000000007
 ```
