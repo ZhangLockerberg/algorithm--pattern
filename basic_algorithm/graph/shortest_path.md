@@ -71,13 +71,16 @@ class Solution:
         M, N = len(A), len(A[0])
         neighors = ((-1, 0), (1, 0), (0, -1), (0, 1))
         
+        dfs = []
+        bfs = collections.deque([])
+
         for i in range(M):
             for j in range(N):
                 if A[i][j] == 1: # start from a 1
-                    dfs = [(i, j)]
+                    dfs.append((i, j))
                     break
-
-        bfs = collections.deque([])
+            if dfs:
+                break
                     
         while dfs:
             r, c = dfs.pop()
