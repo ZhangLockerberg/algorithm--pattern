@@ -41,7 +41,7 @@ class Solution:
 
 > 给定一个排序链表，删除所有含有重复数字的节点，只保留原始链表中   没有重复出现的数字。
 
-思路：链表头结点可能被删除，所以用 dummy node 辅助删除
+- 思路：链表头结点可能被删除，所以用 dummy node 辅助删除
 
 ```Python
 class Solution:
@@ -119,7 +119,7 @@ class Solution:
 
 > 反转从位置  *m*  到  *n*  的链表。请使用一趟扫描完成反转。
 
-思路：先找到 m 处, 再反转 n - m 次即可
+- 思路：先找到 m 处, 再反转 n - m 次即可
 
 ```Python
 class Solution:
@@ -149,7 +149,7 @@ class Solution:
 
 > 将两个升序链表合并为一个新的升序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
 
-思路：通过 dummy node 链表，连接各个元素
+- 思路：通过 dummy node 链表，连接各个元素
 
 ```Python
 class Solution:
@@ -177,7 +177,7 @@ class Solution:
 
 > 给定一个链表和一个特定值 x，对链表进行分隔，使得所有小于  *x*  的节点都在大于或等于  *x*  的节点之前。
 
-思路：将大于 x 的节点，放到另外一个链表，最后连接这两个链表
+- 思路：将大于 x 的节点，放到另外一个链表，最后连接这两个链表
 
 ```go
 class Solution:
@@ -208,7 +208,7 @@ class Solution:
 
 > 在  *O*(*n* log *n*) 时间复杂度和常数级空间复杂度下，对链表进行排序。
 
-思路：归并排序，slow-fast找中点
+- 思路：归并排序，slow-fast找中点
 
 ```Python
 class Solution:
@@ -262,7 +262,7 @@ class Solution:
 > 给定一个单链表  *L*：*L*→*L*→…→*L\_\_n*→*L*
 > 将其重新排列后变为： *L*→*L\_\_n*→*L*→*L\_\_n*→*L*→*L\_\_n*→…
 
-思路：找到中点断开，翻转后面部分，然后合并前后两个链表
+- 思路：找到中点断开，翻转后面部分，然后合并前后两个链表
 
 ```Python
 class Solution:
@@ -307,9 +307,9 @@ class Solution:
 
 > 给定一个链表，判断链表中是否有环。
 
-思路1：Hash Table 记录所有结点判断重复，空间复杂度 O(n) 非最优，时间复杂度 O(n) 但必然需要 n 次循环
-思路2：快慢指针，快慢指针相同则有环，证明：如果有环每走一步快慢指针距离会减 1，空间复杂度 O(1) 最优，时间复杂度 O(n) 但循环次数小于等于 n
-![fast_slow_linked_list](https://img.fuiboom.com/img/fast_slow_linked_list.png)
+- 思路1：Hash Table 记录所有结点判断重复，空间复杂度 O(n) 非最优，时间复杂度 O(n) 但必然需要 n 次循环
+- 思路2：快慢指针，快慢指针相同则有环，证明：如果有环每走一步快慢指针距离会减 1，空间复杂度 O(1) 最优，时间复杂度 O(n) 但循环次数小于等于 n
+  ![fast_slow_linked_list](https://img.fuiboom.com/img/fast_slow_linked_list.png)
 
 ```Python
 class Solution:
@@ -330,7 +330,8 @@ class Solution:
 
 > 给定一个链表，返回链表开始入环的第一个节点。  如果链表无环，则返回  `null`。
 
-思路：快慢指针，快慢相遇之后，慢指针回到头，快慢指针步调一致一起移动，相遇点即为入环点
+- 思路：快慢指针，快慢相遇之后，慢指针回到头，快慢指针步调一致一起移动，相遇点即为入环点。
+
 ![cycled_linked_list](https://img.fuiboom.com/img/cycled_linked_list.png)
 
 ```Python

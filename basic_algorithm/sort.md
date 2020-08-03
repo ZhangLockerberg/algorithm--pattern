@@ -137,9 +137,9 @@ if __name__ == '__main__':
 
 ### [kth-largest-element-in-an-array](https://leetcode-cn.com/problems/kth-largest-element-in-an-array/)
 
-思路 1: sort 后取第 k 个，最简单直接，复杂度 O(N log N) 代码略
+- 思路 1: sort 后取第 k 个，最简单直接，复杂度 O(N log N) 代码略
 
-思路 2: 使用最小堆，复杂度 O(N log k)
+- 思路 2: 使用最小堆，复杂度 O(N log k)
 
 ```Python
 class Solution:
@@ -157,7 +157,7 @@ class Solution:
         return min_heap[0]
 ```
 
-思路 3: Quick select，方式类似于快排，每次 partition 后检查 pivot 是否为第 k 个元素，如果是则直接返回，如果比 k 大，则继续 partition 小于 pivot 的元素，如果比 k 小则继续 partition 大于 pivot 的元素。相较于快排，quick select 每次只需 partition 一侧，因此平均复杂度为 O(N)
+- 思路 3: [Quick select](https://en.wikipedia.org/wiki/Quickselect)，方式类似于快排，每次 partition 后检查 pivot 是否为第 k 个元素，如果是则直接返回，如果比 k 大，则继续 partition 小于 pivot 的元素，如果比 k 小则继续 partition 大于 pivot 的元素。相较于快排，quick select 每次只需 partition 一侧，因此平均复杂度为 O(N)。
 
 ```Python
 class Solution:

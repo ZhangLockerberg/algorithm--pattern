@@ -15,7 +15,7 @@
 
 #### 递归模板
 
-递归实现二叉树遍历非常简单，不同顺序区别仅在于访问父结点顺序
+- 递归实现二叉树遍历非常简单，不同顺序区别仅在于访问父结点顺序
 
 ```Python
 def preorder_rec(root):
@@ -45,7 +45,7 @@ def postorder_rec(root):
 
 #### [前序非递归](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/)
 
-本质上是图的DFS的一个特例，因此可以用栈来实现
+- 本质上是图的DFS的一个特例，因此可以用栈来实现
 
 ```Python
 class Solution:
@@ -177,13 +177,13 @@ class Solution:
 - 分段处理
 - 合并结果
 
-常见题目示例
+## 常见题目示例
 
-#### [maximum-depth-of-binary-tree](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)
+### [maximum-depth-of-binary-tree](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)
 
 > 给定一个二叉树，找出其最大深度。
 
-思路 1：分治法
+- 思路 1：分治法
 
 ```Python
 class Solution:
@@ -195,7 +195,7 @@ class Solution:
         return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
 ```
 
-思路 2：层序遍历
+- 思路 2：层序遍历
 
 ```Python
 class Solution:
@@ -220,11 +220,11 @@ class Solution:
         return depth
 ```
 
-#### [balanced-binary-tree](https://leetcode-cn.com/problems/balanced-binary-tree/)
+### [balanced-binary-tree](https://leetcode-cn.com/problems/balanced-binary-tree/)
 
 > 给定一个二叉树，判断它是否是高度平衡的二叉树。
 
-思路 1：分治法，左边平衡 && 右边平衡 && 左右两边高度 <= 1，
+- 思路 1：分治法，左边平衡 && 右边平衡 && 左右两边高度 <= 1，
 
 ```Python
 class Solution:
@@ -245,7 +245,7 @@ class Solution:
         return out
 ```
 
-思路 2：使用后序遍历实现分治法的迭代版本
+- 思路 2：使用后序遍历实现分治法的迭代版本
 
 ```Python
 class Solution:
@@ -278,11 +278,11 @@ class Solution:
         return True
 ```
 
-#### [binary-tree-maximum-path-sum](https://leetcode-cn.com/problems/binary-tree-maximum-path-sum/)
+### [binary-tree-maximum-path-sum](https://leetcode-cn.com/problems/binary-tree-maximum-path-sum/)
 
 > 给定一个**非空**二叉树，返回其最大路径和。
 
-思路：分治法。最大路径的可能情况：左子树的最大路径，右子树的最大路径，或通过根结点的最大路径。其中通过根结点的最大路径值等于以左子树根结点为端点的最大路径值加以右子树根结点为端点的最大路径值再加上根结点值，这里还要考虑有负值的情况即负值路径需要丢弃不取。
+- 思路：分治法。最大路径的可能情况：左子树的最大路径，右子树的最大路径，或通过根结点的最大路径。其中通过根结点的最大路径值等于以左子树根结点为端点的最大路径值加以右子树根结点为端点的最大路径值再加上根结点值，这里还要考虑有负值的情况即负值路径需要丢弃不取。
 
 ```Python
 class Solution:
@@ -305,11 +305,11 @@ class Solution:
         return self.maxPath
 ```
 
-#### [lowest-common-ancestor-of-a-binary-tree](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/)
+### [lowest-common-ancestor-of-a-binary-tree](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/)
 
 > 给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
 
-思路：分治法，有左子树的公共祖先或者有右子树的公共祖先，就返回子树的祖先，否则返回根节点
+- 思路：分治法，有左子树的公共祖先或者有右子树的公共祖先，就返回子树的祖先，否则返回根节点
 
 ```Python
 class Solution:
@@ -336,11 +336,11 @@ class Solution:
 
 ### BFS 层次应用
 
-#### [binary-tree-zigzag-level-order-traversal](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/)
+### [binary-tree-zigzag-level-order-traversal](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/)
 
 > 给定一个二叉树，返回其节点值的锯齿形层次遍历。Z 字形遍历
 
-思路：在BFS迭代模板上改用双端队列控制输出顺序
+- 思路：在BFS迭代模板上改用双端队列控制输出顺序
 
 ```Python
 class Solution:
@@ -382,13 +382,13 @@ class Solution:
 
 ### 二叉搜索树应用
 
-####  [validate-binary-search-tree](https://leetcode-cn.com/problems/validate-binary-search-tree/)
+### [validate-binary-search-tree](https://leetcode-cn.com/problems/validate-binary-search-tree/)
 
 > 给定一个二叉树，判断其是否是一个有效的二叉搜索树。
 
-思路 1：中序遍历后检查输出是否有序，缺点是如果不平衡无法提前返回结果， 代码略
+- 思路 1：中序遍历后检查输出是否有序，缺点是如果不平衡无法提前返回结果， 代码略
 
-思路 2：分治法，一个二叉树为合法的二叉搜索树当且仅当左右子树为合法二叉搜索树且根结点值大于右子树最小值小于左子树最大值。缺点是若不用迭代形式实现则无法提前返回，而迭代实现右比较复杂。
+- 思路 2：分治法，一个二叉树为合法的二叉搜索树当且仅当左右子树为合法二叉搜索树且根结点值大于右子树最小值小于左子树最大值。缺点是若不用迭代形式实现则无法提前返回，而迭代实现右比较复杂。
 
 ```Python
 class Solution:
@@ -417,7 +417,7 @@ class Solution:
         return valid_min_max(root)[0]
 ```
 
-思路 3：利用二叉搜索树的性质，根结点为左子树的右边界，右子树的左边界，使用先序遍历自顶向下更新左右子树的边界并检查是否合法，迭代版本实现简单且可以提前返回结果。
+- 思路 3：利用二叉搜索树的性质，根结点为左子树的右边界，右子树的左边界，使用先序遍历自顶向下更新左右子树的边界并检查是否合法，迭代版本实现简单且可以提前返回结果。
 
 ```Python
 class Solution:
@@ -444,7 +444,7 @@ class Solution:
 
 > 给定二叉搜索树（BST）的根节点和要插入树中的值，将值插入二叉搜索树。 返回插入后二叉搜索树的根节点。
 
-思路：如果只是为了完成任务则找到最后一个叶子节点满足插入条件即可。但此题深挖可以涉及到如何插入并维持平衡二叉搜索树的问题，并不适合初学者。
+- 思路：如果只是为了完成任务则找到最后一个叶子节点满足插入条件即可。但此题深挖可以涉及到如何插入并维持平衡二叉搜索树的问题，并不适合初学者。
 
 ```Python
 class Solution:

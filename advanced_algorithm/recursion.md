@@ -6,7 +6,7 @@
 
 ## 示例
 
-[reverse-string](https://leetcode-cn.com/problems/reverse-string/)
+### [reverse-string](https://leetcode-cn.com/problems/reverse-string/)
 
 > 编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组  `char[]`  的形式给出。
 
@@ -28,7 +28,7 @@ class Solution:
         return
 ```
 
-[swap-nodes-in-pairs](https://leetcode-cn.com/problems/swap-nodes-in-pairs/)
+### [swap-nodes-in-pairs](https://leetcode-cn.com/problems/swap-nodes-in-pairs/)
 
 > 给定一个链表，两两交换其中相邻的节点，并返回交换后的链表。
 > **你不能只是单纯的改变节点内部的值**，而是需要实际的进行节点交换。
@@ -47,7 +47,7 @@ class Solution:
         return head
 ```
 
-[unique-binary-search-trees-ii](https://leetcode-cn.com/problems/unique-binary-search-trees-ii/)
+### [unique-binary-search-trees-ii](https://leetcode-cn.com/problems/unique-binary-search-trees-ii/)
 
 > 给定一个整数 n，生成所有由 1 ... n 为节点所组成的二叉搜索树。
 
@@ -76,9 +76,9 @@ class Solution:
         return generateTrees_rec(1, n) if n > 0 else []
 ```
 
-## 递归+备忘录
+## 递归 + 备忘录 (recursion with memorization, top-down DP)
 
-[fibonacci-number](https://leetcode-cn.com/problems/fibonacci-number/)
+### [fibonacci-number](https://leetcode-cn.com/problems/fibonacci-number/)
 
 > 斐波那契数，通常用  F(n) 表示，形成的序列称为斐波那契数列。该数列由  0 和 1 开始，后面的每一项数字都是前面两项数字的和。也就是：
 > F(0) = 0,   F(1) = 1

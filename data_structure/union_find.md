@@ -1,6 +1,6 @@
 # 并查集
 
-用于处理不相交集合 (disjoint sets) 合并及查找的问题，典型应用有连通分量检测，环路检测等。原理和复杂度分析等可以参考[这个链接](https://en.wikipedia.org/wiki/Disjoint-set_data_structure)。
+用于处理不相交集合 (disjoint sets) 合并及查找的问题，典型应用有连通分量检测，环路检测等。原理和复杂度分析等可以参考[维基百科](https://en.wikipedia.org/wiki/Disjoint-set_data_structure)。
 
 ### [redundant-connection](https://leetcode-cn.com/problems/redundant-connection/)
 
@@ -127,7 +127,7 @@ class Solution:
 
 > 地图上有 m 条无向边，每条边 (x, y, w) 表示位置 m 到位置 y 的权值为 w。从位置 0 到 位置 n 可能有多条路径。我们定义一条路径的危险值为这条路径中所有的边的最大权值。请问从位置 0 到 位置 n 所有路径中最小的危险值为多少？
 
-最小危险值为最小生成树中 0 到 n 路径上的最大边权。
+- 最小危险值为最小生成树中 0 到 n 路径上的最大边权。
 
 ```Python
 # Kruskal's algorithm

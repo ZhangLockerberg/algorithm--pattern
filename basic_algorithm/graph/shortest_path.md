@@ -8,7 +8,7 @@
 
 > 给定一个二维矩阵，矩阵中元素 -1 表示墙或是障碍物，0 表示一扇门，INF (2147483647) 表示一个空的房间。你要给每个空房间位上填上该房间到最近门的距离，如果无法到达门，则填 INF 即可。
 
-典型的多源最短路径问题，将所有源作为 BFS 的第一层即可
+- 思路：典型的多源最短路径问题，将所有源作为 BFS 的第一层即可
 
 ```Python
 inf = 2147483647
@@ -62,7 +62,7 @@ class Solution:
 
 > 在给定的 01 矩阵 A 中，存在两座岛 (岛是由四面相连的 1 形成的一个连通分量)。现在，我们可以将 0 变为 1，以使两座岛连接起来，变成一座岛。返回必须翻转的 0 的最小数目。
 
-思路：DFS 遍历连通分量找边界，从边界开始 BFS找最短路径
+- 思路：DFS 遍历连通分量找边界，从边界开始 BFS找最短路径
 
 ```Python
 class Solution:
@@ -119,7 +119,7 @@ class Solution:
 
 ### [network-delay-time](https://leetcode-cn.com/problems/network-delay-time/)
 
-标准的单源最短路径问题，使用朴素的的 Dijikstra 算法即可，可以当成模板使用。
+- 标准的单源最短路径问题，使用朴素的 Dijikstra 算法即可。
 
 ```Python
 class Solution:
@@ -147,7 +147,7 @@ class Solution:
 
 ### [cheapest-flights-within-k-stops](https://leetcode-cn.com/problems/cheapest-flights-within-k-stops/)
 
-在标准的单源最短路径问题上限制了路径的边数，因此需要同时维护当前 SPT 内每个结点最短路径的边数，当遇到边数更小的路径 (边权和可以更大) 时结点需要重新入堆，以更新后继在边数上限内没达到的结点。
+- 在标准的单源最短路径问题上限制了路径的边数，因此需要同时维护当前 SPT 内每个结点最短路径的边数，当遇到边数更小的路径 (边权和可以更大) 时结点需要重新入堆，以更新后继在边数上限内没达到的结点。
 
 ```Python
 class Solution:

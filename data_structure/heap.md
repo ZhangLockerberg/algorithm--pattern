@@ -29,7 +29,7 @@ class KthLargest:
 
 ### [kth-smallest-element-in-a-sorted-matrix](https://leetcode-cn.com/problems/kth-smallest-element-in-a-sorted-matrix/)
 
-此题使用 heap 来做并不是最优做法，相当于 N 个 sorted list 里找第 k 个最小，列有序的条件没有充分利用，但是却是比较容易想且比较通用的做法。
+- 此题使用 heap 来做并不是最优做法，相当于 N 个 sorted list 里找第 k 个最小，列有序的条件没有充分利用，但是却是比较容易想且比较通用的做法。
 
 ```Python
 class Solution:
@@ -91,7 +91,7 @@ Heap 可以高效地取出或更新当前池中优先级最高的元素，因此
 > 公司有 n 个工程师，给两个数组 speed 和 efficiency，其中 speed[i] 和 efficiency[i] 分别代表第 i 位工程师的速度和效率。请你返回由最多 k 个工程师组成的团队的最大表现值。表现值的定义为：一个团队中所有工程师速度的和乘以他们效率值中的最小值。
 >
 
-[See my review here.](https://leetcode.com/problems/maximum-performance-of-a-team/discuss/741822/Met-this-problem-in-my-interview!!!-(Python3-greedy-with-heap)) [或者这里(中文)](https://leetcode-cn.com/problems/maximum-performance-of-a-team/solution/greedy-with-min-heap-lai-zi-zhen-shi-mian-shi-de-j/)
+- [See my review here.](https://leetcode.com/problems/maximum-performance-of-a-team/discuss/741822/Met-this-problem-in-my-interview!!!-(Python3-greedy-with-heap)) [或者这里(中文)](https://leetcode-cn.com/problems/maximum-performance-of-a-team/solution/greedy-with-min-heap-lai-zi-zhen-shi-mian-shi-de-j/)
 
 ```Python
 # similar question: LC 857
@@ -117,7 +117,7 @@ class Solution:
 
 ### [ipo](https://leetcode-cn.com/problems/ipo/)
 
-贪心策略为每次做当前成本范围内利润最大的项目。
+- 贪心策略为每次做当前成本范围内利润最大的项目。
 
 ```Python
 class Solution:
@@ -144,7 +144,7 @@ class Solution:
 
 ### [meeting-rooms-ii](https://leetcode-cn.com/problems/meeting-rooms-ii/)
 
-此题用 greedy + heap 解并不是很 intuitive，存在复杂度相同但更简单直观的做法。
+- 此题用 greedy + heap 解并不是很 intuitive，存在复杂度相同但更简单直观的做法。
 
 ```Python
 class Solution:
@@ -208,7 +208,7 @@ class Solution:
 
 > 地图上有 m 条无向边，每条边 (x, y, w) 表示位置 m 到位置 y 的权值为 w。从位置 0 到 位置 n 可能有多条路径。我们定义一条路径的危险值为这条路径中所有的边的最大权值。请问从位置 0 到 位置 n 所有路径中最小的危险值为多少？
 
-最小危险值为最小生成树中 0 到 n 路径上的最大边权。
+- 最小危险值为最小生成树中 0 到 n 路径上的最大边权。
 
 ```Python
 class Solution:
@@ -252,7 +252,7 @@ class Solution:
 
 ### [network-delay-time](https://leetcode-cn.com/problems/network-delay-time/)
 
-标准的单源最短路径问题，使用朴素的的 Dijikstra 算法即可，可以当成模板使用。
+- 标准的单源最短路径问题，使用朴素的的 Dijikstra 算法即可，可以当成模板使用。
 
 ```Python
 class Solution:
@@ -280,7 +280,7 @@ class Solution:
 
 ### [cheapest-flights-within-k-stops](https://leetcode-cn.com/problems/cheapest-flights-within-k-stops/)
 
-在标准的单源最短路径问题上限制了路径的边数，因此需要同时维护当前 SPT 内每个结点最短路径的边数，当遇到边数更小的路径 (边权和可以更大) 时结点需要重新入堆，以更新后继在边数上限内没达到的结点。
+- 在标准的单源最短路径问题上限制了路径的边数，因此需要同时维护当前 SPT 内每个结点最短路径的边数，当遇到边数更小的路径 (边权和可以更大) 时结点需要重新入堆，以更新后继在边数上限内没达到的结点。
 
 ```Python
 class Solution:

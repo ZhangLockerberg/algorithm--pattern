@@ -37,8 +37,7 @@ class Solution:
         n = len(nums)
         result = []
         
-        route = []
-        def backtrack(start, k):
+        def backtrack(start, k, route=[]):
             if len(route) == k:
                 result.append(route.copy())
                 return
@@ -68,8 +67,7 @@ class Solution:
         n = len(nums)
         result = []
         
-        route = []
-        def backtrack(start, k):
+        def backtrack(start, k, route=[]):
             
             if len(route) == k:
                 result.append(route.copy())

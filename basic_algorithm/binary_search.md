@@ -15,7 +15,7 @@
 
 典型示例
 
-[binary-search](https://leetcode-cn.com/problems/binary-search/)
+### [binary-search](https://leetcode-cn.com/problems/binary-search/)
 
 > 给定一个  n  个元素有序的（升序）整型数组  nums 和一个目标值  target  ，写一个函数搜索  nums  中的 target，如果目标值存在返回下标，否则返回 -1。
 
@@ -48,7 +48,7 @@ class Solution:
 
 所以用模板#3 就对了，详细的对比可以这边文章介绍：[二分搜索模板](https://leetcode-cn.com/explore/learn/card/binary-search/212/template-analysis/847/)
 
-如果是最简单的二分搜索，不需要找第一个、最后一个位置、或者是没有重复元素，可以使用模板 1，代码更简洁
+- 如果是最简单的二分搜索，不需要找第一个、最后一个位置、或者是没有重复元素，可以使用模板 1，代码更简洁
 
 ```Python
 # 无重复元素搜索时，更方便
@@ -72,7 +72,7 @@ class Solution:
 # 这样可以继续向子节点搜索，如：node:=node.Children[start]
 ```
 
-模板 2：
+- 模板 2：
 
 ```Python
 class Solution:
@@ -101,7 +101,7 @@ class Solution:
 
 > 给定一个包含 n 个整数的排序数组，找出给定目标值 target 的起始和结束位置。如果目标值不在数组中，则返回`[-1, -1]`
 
-思路：核心点就是找第一个 target 的索引，和最后一个 target 的索引，所以用两次二分搜索分别找第一次和最后一次的位置
+- 思路：核心点就是找第一个 target 的索引，和最后一个 target 的索引，所以用两次二分搜索分别找第一次和最后一次的位置
 
 ```Python
 # 使用模板3的解法
@@ -142,8 +142,9 @@ class Solution:
         return Range
 ```
 
+- 使用模板 2 的解法
+
 ```Python
-# 使用模板2的解法
 class Solution:
     def searchRange(self, nums, target):
         Range = [-1, -1]
@@ -174,8 +175,6 @@ class Solution:
         Range[1] = l
         return Range
 ```
-
-
 
 ### [search-insert-position](https://leetcode-cn.com/problems/search-insert-position/)
 
