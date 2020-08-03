@@ -7,7 +7,7 @@
 
 ## 应用
 
-[validate-binary-search-tree](https://leetcode-cn.com/problems/validate-binary-search-tree/)
+### [validate-binary-search-tree](https://leetcode-cn.com/problems/validate-binary-search-tree/)
 
 > 验证二叉搜索树
 
@@ -32,7 +32,7 @@ class Solution:
         return True
 ```
 
-[insert-into-a-binary-search-tree](https://leetcode-cn.com/problems/insert-into-a-binary-search-tree/)
+### [insert-into-a-binary-search-tree](https://leetcode-cn.com/problems/insert-into-a-binary-search-tree/)
 
 > 给定二叉搜索树（BST）的根节点和要插入树中的值，将值插入二叉搜索树。 返回插入后二叉搜索树的根节点。 保证原始二叉搜索树中不存在新值。
 
@@ -51,7 +51,7 @@ class Solution:
         return root
 ```
 
-[delete-node-in-a-bst](https://leetcode-cn.com/problems/delete-node-in-a-bst/)
+### [delete-node-in-a-bst](https://leetcode-cn.com/problems/delete-node-in-a-bst/)
 
 > 给定一个二叉搜索树的根节点 root 和一个值 key，删除二叉搜索树中的  key  对应的节点，并保证二叉搜索树的性质不变。返回二叉搜索树（有可能被更新）的根节点的引用。
 
@@ -97,7 +97,7 @@ class Solution:
         return dummy.left   
 ```
 
-[balanced-binary-tree](https://leetcode-cn.com/problems/balanced-binary-tree/)
+### [balanced-binary-tree](https://leetcode-cn.com/problems/balanced-binary-tree/)
 
 > 给定一个二叉树，判断它是否是高度平衡的二叉树。
 
@@ -132,6 +132,40 @@ class Solution:
                         s[-1][2] = d
         
         return True
+```
+
+### [valid-bfs-of-bst](./bst_bfs.py)
+
+> 给定一个整数数组，求问此数组是不是一个 BST 的 BFS 顺序。
+
+此题是面试真题，但是没有在 leetcode 上找到原题。由于做法比较有趣也很有 BST 的特点，补充在这供参考。
+
+```Python
+import collections
+
+def bst_bfs(A):
+
+    N = len(A)
+    interval = collections.deque([(float('-inf'), A[0]), (A[0], float('inf'))])
+
+    for i in range(1, N):
+        while interval:
+            lower, upper = interval.popleft()
+            if lower < A[i] < upper:
+                interval.append((lower, A[i]))
+                interval.append((A[i], upper))
+                break
+        
+        if not interval:
+            return False
+    
+    return True
+
+if __name__ == "__main__":
+    A = [10, 8, 11, 1, 9, 0, 5, 3, 6, 4, 12]
+    print(bst_bfs(A))
+    A = [10, 8, 11, 1, 9, 0, 5, 3, 6, 4, 7]
+    print(bst_bfs(A))
 ```
 
 ## 练习
