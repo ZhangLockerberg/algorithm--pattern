@@ -21,7 +21,6 @@
 ### 入门篇 🐶
 
 - [使用 Python3 写算法题](./introduction/python.md)
-
 - [算法快速入门](./introduction/quickstart.md)
 
 ### 数据结构篇 🐰
