@@ -180,7 +180,7 @@ class Solution:
                 for dr, dc in neighors:
                     nr, nc = r + dr, c + dc
                     if 0<= nr < M and 0 <= nc < N:
-                        if A[nr][nc] == 0: # meet and edge
+                        if A[nr][nc] == 0:
                             A[nr][nc] = -2
                             bfs.append((nr, nc))
                         elif A[nr][nc] == 1:

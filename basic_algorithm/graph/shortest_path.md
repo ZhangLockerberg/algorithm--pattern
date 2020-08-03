@@ -105,81 +105,12 @@ class Solution:
                 for dr, dc in neighors:
                     nr, nc = r + dr, c + dc
                     if 0<= nr < M and 0 <= nc < N:
-                        if A[nr][nc] == 0: # meet and edge
+                        if A[nr][nc] == 0:
                             A[nr][nc] = -2
                             bfs.append((nr, nc))
                         elif A[nr][nc] == 1:
                             return flip
             flip += 1
-```
-
-## Bidrectional BFS
-
-当求点对点的最短路径时，BFS遍历结点数目随路径长度呈指数增长，为缩小遍历结点数目可以考虑从起点 BFS 的同时从终点也做 BFS，当路径相遇时得到最短路径。
-
-### [word-ladder](https://leetcode-cn.com/problems/word-ladder/)
-
-```Python
-class Solution:
-    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
-        
-        N, K = len(wordList), len(beginWord)
-        
-        find_end = False
-        for i in range(N):
-            if wordList[i] == endWord:
-                find_end = True
-                break
-        
-        if not find_end:
-            return 0
-        
-        wordList.append(beginWord)
-        N += 1
-        
-        # clustering nodes for efficiency compare to adjacent list
-        cluster = collections.defaultdict(list)
-        for i in range(N):
-            node = wordList[i]
-            for j in range(K):
-                cluster[node[:j] + '*' + node[j + 1:]].append(node)
-        
-        # bidirectional BFS
-        visited_start, visited_end = set([beginWord]), set([endWord])
-        bfs_start, bfs_end = collections.deque([beginWord]), collections.deque([endWord])
-        step = 2
-        while bfs_start and bfs_end:
-          
-            # start
-            num_level = len(bfs_start)
-            while num_level > 0:
-                node = bfs_start.popleft()
-                for j in range(K):
-                    key = node[:j] + '*' + node[j + 1:]
-                    for n in cluster[key]:
-                        if n in visited_end: # if meet, route from start larger by 1 than route from end
-                            return step * 2 - 2
-                        if n not in visited_start:
-                            visited_start.add(n)
-                            bfs_start.append(n)
-                num_level -= 1
-            
-            # end
-            num_level = len(bfs_end)
-            while num_level > 0:
-                node = bfs_end.popleft()
-                for j in range(K):
-                    key = node[:j] + '*' + node[j + 1:]
-                    for n in cluster[key]:
-                        if n in visited_start: # if meet, route from start equals route from end
-                            return step * 2 - 1
-                        if n not in visited_end:
-                            visited_end.add(n)
-                            bfs_end.append(n)
-                num_level -= 1
-            step += 1
-        
-        return 0
 ```
 
 ## Dijkstra's Algorithm
@@ -250,13 +181,84 @@ class Solution:
         return -1
 ```
 
-## 补充：A* Algorithm
+## 补充
+
+## Bidrectional BFS
+
+当求点对点的最短路径时，BFS遍历结点数目随路径长度呈指数增长，为缩小遍历结点数目可以考虑从起点 BFS 的同时从终点也做 BFS，当路径相遇时得到最短路径。
+
+### [word-ladder](https://leetcode-cn.com/problems/word-ladder/)
+
+```Python
+class Solution:
+    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+        
+        N, K = len(wordList), len(beginWord)
+        
+        find_end = False
+        for i in range(N):
+            if wordList[i] == endWord:
+                find_end = True
+                break
+        
+        if not find_end:
+            return 0
+        
+        wordList.append(beginWord)
+        N += 1
+        
+        # clustering nodes for efficiency compare to adjacent list
+        cluster = collections.defaultdict(list)
+        for i in range(N):
+            node = wordList[i]
+            for j in range(K):
+                cluster[node[:j] + '*' + node[j + 1:]].append(node)
+        
+        # bidirectional BFS
+        visited_start, visited_end = set([beginWord]), set([endWord])
+        bfs_start, bfs_end = collections.deque([beginWord]), collections.deque([endWord])
+        step = 2
+        while bfs_start and bfs_end:
+          
+            # start
+            num_level = len(bfs_start)
+            while num_level > 0:
+                node = bfs_start.popleft()
+                for j in range(K):
+                    key = node[:j] + '*' + node[j + 1:]
+                    for n in cluster[key]:
+                        if n in visited_end: # if meet, route from start larger by 1 than route from end
+                            return step * 2 - 2
+                        if n not in visited_start:
+                            visited_start.add(n)
+                            bfs_start.append(n)
+                num_level -= 1
+            
+            # end
+            num_level = len(bfs_end)
+            while num_level > 0:
+                node = bfs_end.popleft()
+                for j in range(K):
+                    key = node[:j] + '*' + node[j + 1:]
+                    for n in cluster[key]:
+                        if n in visited_start: # if meet, route from start equals route from end
+                            return step * 2 - 1
+                        if n not in visited_end:
+                            visited_end.add(n)
+                            bfs_end.append(n)
+                num_level -= 1
+            step += 1
+        
+        return 0
+```
+
+## A* Algorithm
 
 当需要求解有目标的最短路径问题时，BFS 或 Dijkstra's algorithm 可能会搜索过多冗余的其他目标从而降低搜索效率，此时可以考虑使用 A* algorithm。原理不展开，有兴趣可以自行搜索。实现上和 Dijkstra’s algorithm 非常相似，只是优先级需要加上一个到目标点距离的估值，这个估值严格小于等于真正的最短距离时保证得到最优解。当 A* algorithm 中的距离估值为 0 时 退化为 BFS 或 Dijkstra’s algorithm。
 
 ### [sliding-puzzle](https://leetcode-cn.com/problems/sliding-puzzle)
 
-思路 1：BFS。为了方便对比 A* 算法写成了与其相似的形式。
+- 方法 1：BFS。为了方便对比 A* 算法写成了与其相似的形式。
 
 ```Python
 class Solution:
@@ -300,7 +302,7 @@ class Solution:
         return -1
 ```
 
-思路 2：A* algorithm
+- 方法 2：A* algorithm
 
 ```Python
 class Solution:

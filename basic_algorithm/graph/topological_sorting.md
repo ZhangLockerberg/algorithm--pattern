@@ -6,10 +6,11 @@
 
 > 给定课程的先修关系，求一个可行的修课顺序
 
-非常经典的拓扑排序应用题目。下面给出 3 种实现方法，可以当做模板使用。
+非常经典的拓扑排序应用。下面给出 3 种实现方法，可以当做模板使用。
+
+- 方法 1：DFS 的递归实现
 
 ```Python
-# 方法 1：DFS 的递归实现
 NOT_VISITED = 0
 DISCOVERING = 1
 VISITED = 2
@@ -42,8 +43,9 @@ class Solution:
         return tsort_rev[::-1]
 ```
 
+- 方法 2：DFS 的迭代实现
+
 ```Python
-# 方法 2：DFS 的迭代实现
 NOT_VISITED = 0
 DISCOVERING = 1
 VISITED = 2
@@ -81,8 +83,9 @@ class Solution:
         return tsort_rev[::-1]
 ```
 
+- 方法 3：[Kahn's algorithm](https://en.wikipedia.org/wiki/Topological_sorting#Kahn's_algorithm)
+
 ```Python
-# 方法 3：Kahn's algorithm: https://en.wikipedia.org/wiki/Topological_sorting#Kahn's_algorithm
 class Solution:
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
         
