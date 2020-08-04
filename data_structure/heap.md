@@ -4,7 +4,11 @@
 
 ## Kth largest/smallest
 
+找数据中第 K 个最大/最小数据是堆的一个典型应用。以找最大为例，遍历数据时，使用一个最小堆来维护当前最大的 K 个数据，堆顶数据为这 K 个数据中最小，即是你想要的第 k 个最大数据。每检查一个新数据，判断是否大于堆顶，若大于，说明堆顶数据小于了 K 个值，不是我们想找的第 K 个最大，则将新数据 push 进堆并 pop 掉堆顶，若小于则不操作，这样当遍历完全部数据后堆顶即为想要的结果。找最小时换成最大堆即可。
+
 ### [kth-largest-element-in-a-stream](https://leetcode-cn.com/problems/kth-largest-element-in-a-stream/)
+
+> 设计一个找到数据流中第K大元素的类。
 
 ```Python
 class KthLargest:
@@ -28,6 +32,8 @@ class KthLargest:
 ```
 
 ### [kth-smallest-element-in-a-sorted-matrix](https://leetcode-cn.com/problems/kth-smallest-element-in-a-sorted-matrix/)
+
+> 给定一个 n x n 矩阵，其中每行和每列元素均按升序排序，找到矩阵中第 k 小的元素。
 
 - 此题使用 heap 来做并不是最优做法，相当于 N 个 sorted list 里找第 k 个最小，列有序的条件没有充分利用，但是却是比较容易想且比较通用的做法。
 
@@ -166,6 +172,10 @@ class Solution:
 
 ### [reorganize-string](https://leetcode-cn.com/problems/reorganize-string/)
 
+> 给定一个字符串 S，检查是否能重新排布其中的字母，使得任意两相邻的字符不同。若可行，输出任意可行的结果。若不可行，返回空字符串。
+
+- 贪心策略为每次取前两个最多数量的字母加入到结果。
+
 ```Python
 class Solution:
     def reorganizeString(self, S: str) -> str:
@@ -248,7 +258,7 @@ class Solution:
 
 ### Dijkstra's Algorithm
 
-实现上是 greedy + heap 的一个应用，用于求解图的单源最短路径相关的问题。
+实现上是 greedy + heap 的一个应用，用于求解图的单源最短路径相关的问题，生成的树为最短路径树 (SPT)。
 
 ### [network-delay-time](https://leetcode-cn.com/problems/network-delay-time/)
 
