@@ -471,7 +471,49 @@ class Solution:
         return dist
 ```
 
+## 补充：单调栈
+
+用线性的时间复杂度找左右两侧第一个大于/小于当前元素的位置。
+
+### [largest-rectangle-in-histogram](https://leetcode-cn.com/problems/largest-rectangle-in-histogram/)
+
+```Python
+class Solution:
+    def largestRectangleArea(self, heights) -> int:
+        heights.append(0)
+        stack = [-1]
+        result = 0
+        for i in range(len(heights)):
+            while stack and heights[i] < heights[stack[-1]]:
+                cur = stack.pop()
+                result = max(result, heights[cur] * (i - stack[-1] - 1))
+            stack.append(i)
+        return result
+```
+
+### [trapping-rain-water](https://leetcode-cn.com/problems/trapping-rain-water/)
+
+```Python
+class Solution:
+    def trap(self, height: List[int]) -> int:
+        
+        stack = []
+        result = 0
+        
+        for i in range(len(height)):
+            while stack and height[i] > height[stack[-1]]:
+                cur = stack.pop()
+                if not stack:
+                    break
+                result += (min(height[stack[-1]], height[i]) - height[cur]) * (i - stack[-1] - 1)
+            stack.append(i)
+        
+        return result
+```
+
 ## 补充：单调队列
+
+单调栈的拓展，可以以线性时间获得区间最大/最小值。
 
 ### [sliding-window-maximum](https://leetcode-cn.com/problems/sliding-window-maximum/)
 
