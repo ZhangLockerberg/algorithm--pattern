@@ -473,7 +473,7 @@ class Solution:
 
 ## 补充：单调栈
 
-用线性的时间复杂度找左右两侧第一个大于/小于当前元素的位置。
+顾名思义，单调栈即是栈中元素有单调性的栈，典型应用为用线性的时间复杂度找左右两侧第一个大于/小于当前元素的位置。
 
 ### [largest-rectangle-in-histogram](https://leetcode-cn.com/problems/largest-rectangle-in-histogram/)
 
@@ -513,7 +513,7 @@ class Solution:
 
 ## 补充：单调队列
 
-单调栈的拓展，可以以线性时间获得区间最大/最小值。
+单调栈的拓展，可以从数组头 pop 出旧元素，典型应用是以线性时间获得区间最大/最小值。
 
 ### [sliding-window-maximum](https://leetcode-cn.com/problems/sliding-window-maximum/)
 
@@ -533,7 +533,8 @@ class Solution:
         # define a max queue
         maxQ = collections.deque()
         
-        def push(i):
+        result = []
+        for i in range(N):
             if maxQ and maxQ[0] == i - k:
                 maxQ.popleft()
             
@@ -541,15 +542,37 @@ class Solution:
                 maxQ.pop()
             
             maxQ.append(i)
-            return
-        
-        result = []
-        for i in range(N):
-            push(i)
+            
             if i >= k - 1:
                 result.append(nums[maxQ[0]])
         
         return result
+```
+
+### [shortest-subarray-with-sum-at-least-k](https://leetcode-cn.com/problems/shortest-subarray-with-sum-at-least-k/)
+
+```Python
+class Solution:
+    def shortestSubarray(self, A: List[int], K: int) -> int:
+        N = len(A)
+        cdf = [0]
+        for num in A:
+            cdf.append(cdf[-1] + num)
+
+        result = N + 1
+        minQ = collections.deque()
+        
+        for i, csum in enumerate(cdf):
+            
+            while minQ and csum <= cdf[minQ[-1]]:
+                minQ.pop()
+
+            while minQ and csum - cdf[minQ[0]] >= K:
+                result = min(result, i - minQ.popleft())
+
+            minQ.append(i)
+
+        return result if result < N + 1 else -1 
 ```
 
 ## 总结
